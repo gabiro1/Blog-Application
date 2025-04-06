@@ -1,0 +1,407 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* General Reset */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+:root{
+  --gradient1: linear-gradient(90deg, #EEF1F8, #0E552D);
+  --gradient2: linear-gradient(90deg, #0E552D, #EEF1F8);
+  --green: #0E552D;
+  --btn-hover: #28A745;
+  --dark-color: #232536;
+}
+
+body {
+  background-color: var(--gradient2);
+  color: #0C0F13;
+  line-height: 1.6;
+}
+
+/* Header */
+.header-container{
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--gradient1);
+  color: white;
+  padding: 15px 20px;
+}
+
+.header .logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.header nav {
+  display: flex;
+  gap: 20px;
+}
+.nav-links {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.header nav a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+
+.header button {
+  background: #EEF1F8;
+  color: #0C0F13;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Hero Section */
+.hero {
+  height: 88vh;
+  width: 100%;
+  border: 2px solid blue;
+  background-size: cover;
+  color: var(--dark-color);
+}
+.hero-btn {
+  background: var(--green);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.hero h1 {
+  font-size: 36px;
+  font-weight: bold;
+  max-width: 600px;
+  
+}
+
+.hero p {
+  font-size: 18px;
+}
+
+
+
+.hero {
+
+  padding: 100px 0 0 90px;
+}
+
+.hero-image {
+  width: 100%;
+  max-width: 600px; /* Adjust size as needed */
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+
+/* Featured Post */
+.featured-post {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.featured-post h2 {
+  font-size: 28px;
+  color: #003366;
+}
+
+.featured-post .post {
+  background: white;
+  padding: 20px;
+  max-width: 600px;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.featured-post img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.featured-post button {
+  background: #003366;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* All Posts */
+.all-posts {
+  padding: 50px 20px;
+}
+
+.all-posts h2 {
+  text-align: center;
+  color: #003366;
+  font-size: 28px;
+}
+
+.all-posts ul {
+  list-style: none;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.all-posts li {
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Categories */
+.categories {
+  text-align: center;
+  padding: 50px 20px;
+  background: #fdd835;
+}
+
+.categories h2 {
+  font-size: 28px;
+  color: #003366;
+}
+
+.category-list {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.category-list div {
+  background: #003366;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* About */
+.about {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.about h2 {
+  font-size: 28px;
+  color: #003366;
+}
+
+.about button {
+  background: #EEF1F8;
+  color: #0C0F13;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Why We Started */
+/* Style for the section container */
+.why-we-started {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* Ensure image fills its container */
+.why-we-started .img-fluid {
+  object-fit: cover;
+  height: 100%; /* Make the image fill the full height */
+}
+
+/* Overlay text over the image */
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center text */
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.5); /* Optional background to enhance readability */
+  padding: 20px;
+}
+
+/* Styles for the text and button on the right side */
+.col-lg-6 {
+  z-index: 2; /* Ensure the right content appears above the image */
+}
+
+.Overlay-card{
+  z-index: 5;
+  background: #f8f9fa;
+  position: absolute;
+  left: 25%;
+}
+
+/* Ensure the button and content look neat */
+button.btn-success {
+  text-transform: uppercase;
+}
+
+
+/* Authors */
+.authors-section {
+  text-align: center;
+  padding: 50px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.author-list {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.author-card {
+  margin: 10px;
+  background: #f8f9fa;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: 250px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.author-card:hover {
+  transform: translateY(-5px);
+}
+
+.author-card.highlight {
+  background: #fdf7e3;
+}
+
+.author-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  
+}
+
+.author-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.author-role {
+  color: #555;
+  font-size: 14px;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.social-icons svg {
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.social-icons svg:hover {
+  color: #007bff;
+}
+
+
+/* Footer */
+.footer {
+  background: var(--green);
+  color: white;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.footer-container{
+  display: flex;
+}
+
+.footer div {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer .social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.footer .social-icons svg {
+  font-size: 20px;
+  cursor: pointer;
+}
+.whatsapp-btn{
+  display: flex;
+  justify-content: center;
+  margin: 30px;
+  padding: 8px;
+
+}
+.whatsapp-btn:hover{
+  background-color: #28A745;
+  color: white;
+  border-radius: 8px;
+}
+.footer-section{
+  text-align: left;
+}
+
+.footer-section-header{
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.footer-social-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the left */
+  justify-content: flex-start;
+  margin-top: 20px;
+  width: fit-content; /* Prevent stretching */
+  padding: 10px;
+}
