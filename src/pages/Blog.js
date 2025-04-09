@@ -1,7 +1,7 @@
-import BlogHeaderSection from '../components/BlogHeaderSection';
-import BlogGrid from '../components/BlogGrid';
+import BlogHeaderSection from '../components/blog/BlogHeaderSection';
+import BlogGrid from '../components/blog/BlogGrid';
 import LoadMoreButton from '../components/LoadMoreButton';
-import Footer from '../components/Footer';
+import Footer from '../components/UI/Footer';
 
 
 const BlogPage = () => {

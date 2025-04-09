@@ -1,7 +1,7 @@
-import Footer from "../components/Footer";
-import ContactSectionHeader from "../components/ContactSectionHeader";
-import ContactInfo from "../components/ContactInfo";
-import ContactForm from "../components/ContactForm";
+import Footer from "../components/UI/Footer";
+import ContactSectionHeader from "../components/Contact/ContactSectionHeader";
+import ContactInfo from "../components/Contact/ContactInfo";
+import ContactForm from "../components/Contact/ContactForm";
 
 export default function Contact() {
   return (

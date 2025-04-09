@@ -1,11 +1,11 @@
-import Footer from "../components/Footer";
+import Footer from "../components/UI/Footer";
 import HeroSection from "../components/about/HeroSection";
 import StatsSection from "../components/about/StatsSection";
 import MissionVisionSection from "../components/about/MissionVisionSection";
 import TeamSection from "../components/about/TeamSection";
 import BlogStartSection from "../components/about/BlogStartSection";
-import AuthorsSection from "../components/about/AuthorsSection";
 import JoinTeamSection from "../components/about/JoinTeamSection";
+import Authors from "../components/Authors";
 
 export default function About() {
   return (
@@ -15,7 +15,7 @@ export default function About() {
       <MissionVisionSection />
       <TeamSection />
       <BlogStartSection />
-      <AuthorsSection />
+      <Authors/>
       <JoinTeamSection />
       <Footer />
     </div>

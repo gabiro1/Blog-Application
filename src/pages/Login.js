@@ -1,13 +1,12 @@
 import React from "react";
-import Header from "../components/Header";
-import Hero from "../components/Hero";
+import Hero from "../components/Home/Hero";
 import FeaturedPost from "../components/FeaturedPost";
 import AllPosts from "../components/AllPosts";
 import Categories from "../components/Categories";
-import About from "../components/About";
+import About from "../components/about/About";
 import WhyWeStarted from "../components/WhyWeStarted";
 import Authors from "../components/Authors";
-import Footer from "../components/Footer";
+import Footer from "../components/UI/Footer";
 
 
 
