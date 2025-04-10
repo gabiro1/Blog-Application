@@ -12,7 +12,7 @@ import avatar from './assets/images/avatar.jpg';
 // import ProfilePage from './components/ProfilePage'; 
 import BlogPostDashboard from './components/Dashboard/Post/BlogPostDashboard'; 
 import CommentDashboard from "./components/Dashboard/Comment/CommentDashboard";
-import LikesDashboard from "./components/Dashboard/Likes/LikesDashboard";
+import LikesDashboard from './components/Dashboard/Likes/LikesDashboard';
 import SubscriberDashboard from "./components/Dashboard/Subscriber/SubscriberDashboard";
 import WriterDashboard from "./components/Dashboard/Writer/WriterDashboard";
 

@@ -1,73 +1,33 @@
-import React from 'react';
-import StatusBadge from './StatusBadge';
-import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+// src/components/LikeTable.jsx
+import ActionButtons from './ActionButtons';
 
-const posts = [
-  {
-    id: 1,
-    title: 'UX review presentations',
-    author: 'David Brown',
-    category: 'UI & UX Design',
-    status: 'Draft',
-    createdAt: '2025-03-25 10:00',
-    updatedAt: '2025-03-25 10:00',
-  },
-  {
-    id: 2,
-    title: 'What is Wireframing?',
-    author: 'Sophia Lee',
-    category: 'Coding',
-    status: 'Published',
-    createdAt: '2025-03-25 10:00',
-    updatedAt: '2025-03-25 10:00',
-  },
-  // ... more data
-];
-
-const BlogPostTable = ({ activeTab }) => {
-  const filteredPosts = posts.filter((post) => post.status === activeTab);
-
-  return (
-    <div className="overflow-x-auto bg-white rounded-md border border-gray-200">
-      <table className="w-full table-auto text-left">
-        <thead className="bg-[#1D1B25] text-white text-sm">
-          <tr>
-            <th className="py-3 px-4">Id</th>
-            <th className="py-3 px-4">Title</th>
-            <th className="py-3 px-4">Author</th>
-            <th className="py-3 px-4">Category</th>
-            <th className="py-3 px-4">Status</th>
-            <th className="py-3 px-4">Created at</th>
-            <th className="py-3 px-4">Updated At</th>
-            <th className="py-3 px-4">Action</th>
+const LikeTable = ({ likes, renderActions }) => (
+  <div className="overflow-x-auto rounded-md border">
+    <table className="min-w-full">
+      <thead className="bg-black text-white">
+        <tr>
+          <th className="text-left px-4 py-2">ID</th>
+          <th className="text-left px-4 py-2">User</th>
+          <th className="text-left px-4 py-2">Liked Post Title</th>
+          <th className="text-left px-4 py-2">Date & Time</th>
+          <th className="text-left px-4 py-2">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {likes.map((like) => (
+          <tr key={like.id} className="border-t hover:bg-gray-50">
+            <td className="px-4 py-2">{like.id}</td>
+            <td className="px-4 py-2">{like.user}</td>
+            <td className="px-4 py-2">{like.likedPostTitle}</td>
+            <td className="px-4 py-2">{like.date}</td>
+            <td className="px-4 py-2">
+              {renderActions(like.id)}
+            </td>
           </tr>
-        </thead>
-        <tbody className="text-sm text-gray-800">
-          {filteredPosts.map((post) => (
-            <tr key={post.id} className="border-t">
-              <td className="py-3 px-4">{post.id}</td>
-              <td className="py-3 px-4">{post.title}</td>
-              <td className="py-3 px-4">{post.author}</td>
-              <td className="py-3 px-4">{post.category}</td>
-              <td className="py-3 px-4">
-                <StatusBadge status={post.status} />
-              </td>
-              <td className="py-3 px-4">{post.createdAt}</td>
-              <td className="py-3 px-4">{post.updatedAt}</td>
-              <td className="py-3 px-4 flex gap-3 text-gray-600">
-                <button title="Edit">
-                  <FiEdit2 size={16} />
-                </button>
-                <button title="Delete">
-                  <FiTrash2 size={16} />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
 
-export default BlogPostTable;
+export default LikeTable;
