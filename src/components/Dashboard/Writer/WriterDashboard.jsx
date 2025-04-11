@@ -83,23 +83,24 @@ const Writers = () => {
             value={searchTerm}
             onChange={handleSearch}
             placeholder="Search by Name or Email"
-            className="flex-grow border border-gray-300 rounded-md px-4 py-2 w-full"
+            className="flex-grow border border-gray-300 rounded-md px-4 py-2 w-auto"
           />
+          <button
+            onClick={() => {
+              setEditableWriter(null); 
+              setModalVisible(true); 
+            }}
+            className="bg-green-800 text-white font-medium px-6 py-2 rounded-md hover:bg-green-700"
+          >
+            Add Writer
+          </button>
           <button
             onClick={handleExport}
             className="bg-green-800 text-white font-medium px-6 py-2 rounded-md hover:bg-green-700"
           >
             Export
           </button>
-          <button
-            onClick={() => {
-              setEditableWriter(null); // No editable writer for new writer
-              setModalVisible(true); // Open modal for adding new writer
-            }}
-            className="bg-blue-800 text-white font-medium px-6 py-2 rounded-md hover:bg-blue-700"
-          >
-            Add Writer
-          </button>
+          
         </div>
 
         <FilterBar activeFilter={activeFilter} onFilter={handleFilter} />

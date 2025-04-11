@@ -4,7 +4,7 @@ const SearchBar = ({ searchTerm, onSearch }) => (
       value={searchTerm}
       onChange={onSearch}
       placeholder="Search"
-      className="flex-grow border border-gray-300 rounded-md px-4 py-2 w-full"
+      className="flex-grow border border-gray-300 rounded-md px-4 py-2 w-auto outline-none"
     />
   );
   

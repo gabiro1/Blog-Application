@@ -14,7 +14,7 @@ function Authors() {
   ];
 
   return (
-    <section className="authors-section py-16 px-7 bg-gray-50">
+    <section className="authors-section p-16 bg-gray-50">
       <h2 className="title text-3xl font-semibold text-center mb-8">List of Authors</h2>
       <div className="author-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
         {authors.map((author, index) => (

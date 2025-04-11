@@ -1,31 +1,15 @@
 import React from 'react';
-import StatusBadge from './StatusBadge';
+import StatusBadge from './StatusBadge';  // Assuming you have a StatusBadge component
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
-const posts = [
-  {
-    id: 1,
-    title: 'UX review presentations',
-    author: 'David Brown',
-    category: 'UI & UX Design',
-    status: 'Draft',
-    createdAt: '2025-03-25 10:00',
-    updatedAt: '2025-03-25 10:00',
-  },
-  {
-    id: 2,
-    title: 'What is Wireframing?',
-    author: 'Sophia Lee',
-    category: 'Coding',
-    status: 'Published',
-    createdAt: '2025-03-25 10:00',
-    updatedAt: '2025-03-25 10:00',
-  },
-  // ... more data
-];
+const BlogPostTable = ({ posts, activeTab, handleEdit, handleDelete }) => {
+  console.log('Active Tab:', activeTab); // Log activeTab value
+  console.log('All Posts:', posts); // Log all posts to see what you have
 
-const BlogPostTable = ({ activeTab }) => {
+  // Filter posts based on the selected status (activeTab)
   const filteredPosts = posts.filter((post) => post.status === activeTab);
+  
+  console.log('Filtered Posts:', filteredPosts); // Log filtered posts
 
   return (
     <div className="overflow-x-auto bg-white rounded-md border border-gray-200">
@@ -43,27 +27,43 @@ const BlogPostTable = ({ activeTab }) => {
           </tr>
         </thead>
         <tbody className="text-sm text-gray-800">
-          {filteredPosts.map((post) => (
-            <tr key={post.id} className="border-t">
-              <td className="py-3 px-4">{post.id}</td>
-              <td className="py-3 px-4">{post.title}</td>
-              <td className="py-3 px-4">{post.author}</td>
-              <td className="py-3 px-4">{post.category}</td>
-              <td className="py-3 px-4">
-                <StatusBadge status={post.status} />
-              </td>
-              <td className="py-3 px-4">{post.createdAt}</td>
-              <td className="py-3 px-4">{post.updatedAt}</td>
-              <td className="py-3 px-4 flex gap-3 text-gray-600">
-                <button title="Edit">
-                  <FiEdit2 size={16} />
-                </button>
-                <button title="Delete">
-                  <FiTrash2 size={16} />
-                </button>
+          {filteredPosts.length > 0 ? (
+            filteredPosts.map((post) => (
+              <tr key={post.id} className="border-t">
+                <td className="py-3 px-4">{post.id}</td>
+                <td className="py-3 px-4">{post.title}</td>
+                <td className="py-3 px-4">{post.author}</td>
+                <td className="py-3 px-4">{post.category}</td>
+                <td className="py-3 px-4">
+                  <StatusBadge status={post.status} />
+                </td>
+                <td className="py-3 px-4">{post.createdAt}</td>
+                <td className="py-3 px-4">{post.updatedAt}</td>
+                <td className="py-3 px-4 flex gap-3 text-gray-600">
+                  <button
+                    title="Edit"
+                    onClick={() => handleEdit(post)}
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    <FiEdit2 size={16} />
+                  </button>
+                  <button
+                    title="Delete"
+                    onClick={() => handleDelete(post)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <FiTrash2 size={16} />
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="8" className="py-3 px-4 text-center text-gray-500">
+                No posts available.
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

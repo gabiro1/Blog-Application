@@ -11,7 +11,7 @@ export default function About() {
   return (
     <div>
       <HeroSection />
-      <StatsSection />
+      {/* <StatsSection /> */}
       <MissionVisionSection />
       <TeamSection />
       <BlogStartSection />

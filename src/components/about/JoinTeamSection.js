@@ -1,6 +1,6 @@
 export default function JoinTeamSection() {
     return (
-      <section className="py-12 text-center">
+      <section className="py-12 text-center mb-10">
         <h3 className="text-xl font-semibold mb-4">
           Join our team to be a part of our story
         </h3>

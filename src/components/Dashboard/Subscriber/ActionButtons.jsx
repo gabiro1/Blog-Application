@@ -1,16 +1,18 @@
+import { FiTrash2, FiEdit2 } from "react-icons/fi";
+
 const ActionButtons = ({ onEdit, onDelete }) => (
     <div className="flex space-x-2">
       <button
         onClick={onEdit}
-        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        className="px-4 py-2  text-dark rounded-md"
       >
-        Edit
+        <FiEdit2 size={16} />
       </button>
       <button
         onClick={onDelete}
-        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+        className="  text-dark rounded-md "
       >
-        Delete
+        <FiTrash2 size={16} />
       </button>
     </div>
   );

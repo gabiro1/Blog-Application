@@ -6,6 +6,7 @@ import Sidebar from '../UI Dashboard/Sidebar';
 import ActionButtons from './ActionButtons';
 import Modal from './Modal';  // Delete Modal
 import EditModal from './EditModal';  // Import Edit Modal
+import { exportToCSV } from '../../../utils/exportToCSV';
 
 const commentsData = [
   { id: 1, user: 'David Brown', comment: 'Great article!', title: 'UX review presentations', status: 'Approved' },
@@ -66,6 +67,9 @@ const Comments = () => {
     return matchesSearchTerm && matchesStatusFilter;
   });
   
+  const handleExport = () => {
+    exportToCSV(filteredComments);
+  };
 
   return (
     <div className="flex">
@@ -79,7 +83,9 @@ const Comments = () => {
           <div className="flex flex-grow max-w-xl w-full">
             <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
           </div>
-          <button className="bg-green-800 text-white font-medium px-6 py-2 rounded-md hover:bg-green-700">
+          <button 
+          onClick={handleExport}
+          className="bg-green-800 text-white font-medium px-6 py-2 rounded-md hover:bg-green-700">
             Export
           </button>
         </div>

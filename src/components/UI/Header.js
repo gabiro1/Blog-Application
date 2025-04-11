@@ -14,12 +14,12 @@ function Header({ isAuthenticated, onLogout, userProfilePic }) {
     <header className="sticky top-0 z-50 bg-gradient-to-r from-[#EEF1F8] to-[#0E552D] text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 ml-6">
           <img src={logo} alt="Logo" className="h-10 w-auto" />
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-10 mr-6">
           <Link to="/" className="hover:text-gray-200 text-white text-decoration-none">Home</Link>
           <Link to="/blog" className="hover:text-gray-200 text-white text-decoration-none">Blog</Link>
           <Link to="/about" className="hover:text-gray-200 text-white text-decoration-none">About</Link>

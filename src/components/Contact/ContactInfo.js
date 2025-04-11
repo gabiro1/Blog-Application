@@ -1,6 +1,6 @@
 export default function ContactInfo() {
     return (
-      <div className="bg-gray-900 text-white grid grid-cols-1 md:grid-cols-2 p-6 rounded-md mb-6">
+      <div className="bg-gray-900 text-white grid grid-cols-1 md:grid-cols-2 p-6 rounded-md mb-6 mt-10">
         <div>
           <h4 className="font-bold mb-2">Working hours</h4>
           <p className="text-sm">Monday To Friday</p>

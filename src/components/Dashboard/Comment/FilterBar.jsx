@@ -1,19 +1,21 @@
-const filters = ['All', 'Approved', 'Pending', 'Report']; // Update filter options
+import React from 'react';
+
+const filters = ['All', 'Approved', 'Pending', 'Report'];
 
 const FilterBar = ({ activeFilter, onFilter }) => (
-  <div className="flex items-center flex-wrap gap-4">
-    <span className="font-medium">Filters:</span>
+  <div className="flex gap-6 mb-6 border-b border-gray-200">
     {filters.map((filter) => (
-      <label key={filter} className="flex items-center gap-2 text-sm">
-        <input
-          type="radio" // Use radio buttons for single selection
-          name="status-filter"
-          checked={activeFilter === filter}
-          onChange={() => onFilter(filter)} // Trigger the filter change
-          className="h-4 w-4 text-green-800 border-gray-300 rounded"
-        />
+      <button
+        key={filter}
+        onClick={() => onFilter(filter)}
+        className={`pb-2 relative font-medium text-sm ${
+          activeFilter === filter
+            ? 'text-black border-b-2 border-green-600'
+            : 'text-gray-500'
+        }`}
+      >
         {filter}
-      </label>
+      </button>
     ))}
   </div>
 );

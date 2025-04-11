@@ -1,6 +1,6 @@
 export default function ContactForm() {
     return (
-      <form className="space-y-4">
+      <form className="space-y-4 mb-48 ">
         <input
           type="text"
           placeholder="Full Name"

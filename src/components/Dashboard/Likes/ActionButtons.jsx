@@ -1,4 +1,4 @@
-import { FaTrash } from 'react-icons/fa'; // Importing FontAwesome trash icon
+import { FiTrash } from 'react-icons/fi'; // Importing FontAwesome trash icon
 
 const ActionButtons = ({ openDeleteModal }) => (
   <div className="flex space-x-2">
@@ -6,7 +6,7 @@ const ActionButtons = ({ openDeleteModal }) => (
       onClick={openDeleteModal}
       className="text-red-500 hover:text-red-700"
     >
-      <FaTrash size={20} /> {/* Display trash icon */}
+      <FiTrash size={20} /> {/* Display trash icon */}
     </button>
   </div>
 );

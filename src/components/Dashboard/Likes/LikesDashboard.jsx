@@ -4,6 +4,7 @@ import LikeTable from '../Likes/LikesTable';
 import FilterBar from '../Likes/FilterBar';
 import ActionButtons from '../Likes/ActionButtons';
 import Modal from '../Likes/Modal';
+import { exportToCSV } from '../../../utils/exportToCSV';
 
 // Dummy data for likes
 const likesData = [
@@ -48,6 +49,10 @@ const Likes = () => {
     return matchesSearchTerm && matchesStatusFilter;
   });
 
+  const handleExport = () => {
+    exportToCSV(filteredLikes);
+  };
+
   // Optional: Sorting by date (most recent first)
   const sortedLikes = filteredLikes.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -65,7 +70,9 @@ const Likes = () => {
             placeholder="Search"
             className="flex-grow border border-gray-300 rounded-md px-4 py-2 w-full"
           />
-          <button className="bg-green-800 text-white font-medium px-6 py-2 rounded-md hover:bg-green-700">
+          <button 
+            onClick={handleExport}
+          className="bg-green-800 text-white font-medium px-6 py-2 rounded-md hover:bg-green-700">
             Export
           </button>
         </div>

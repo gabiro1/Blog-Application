@@ -1,32 +1,23 @@
 import React from 'react';
 
+const filters = ['All', 'Active', 'Top Writer', 'Suspended'];
+
 const FilterBar = ({ activeFilter, onFilter }) => {
   return (
-    <div className="flex space-x-4 mb-6">
-      <button
-        onClick={() => onFilter('All')}
-        className={`px-4 py-2 rounded-md ${activeFilter === 'All' ? 'bg-gray-500 text-white' : 'bg-gray-200'}`}
-      >
-        All
-      </button>
-      <button
-        onClick={() => onFilter('Active')}
-        className={`px-4 py-2 rounded-md ${activeFilter === 'Active' ? 'bg-gray-500 text-white' : 'bg-gray-200'}`}
-      >
-        Active
-      </button>
-      <button
-        onClick={() => onFilter('Top Writer')}
-        className={`px-4 py-2 rounded-md ${activeFilter === 'Top Writer' ? 'bg-gray-500 text-white' : 'bg-gray-200'}`}
-      >
-        Top Writer
-      </button>
-      <button
-        onClick={() => onFilter('Suspended')}
-        className={`px-4 py-2 rounded-md ${activeFilter === 'Suspended' ? 'bg-gray-500 text-white' : 'bg-gray-200'}`}
-      >
-        Suspended
-      </button>
+    <div className="flex gap-6 mb-6 border-b border-gray-200">
+      {filters.map((filter) => (
+        <button
+          key={filter}
+          onClick={() => onFilter(filter)}
+          className={`pb-2 relative font-medium text-sm ${
+            activeFilter === filter
+              ? 'text-black border-b-2 border-green-600'
+              : 'text-gray-500'
+          }`}
+        >
+          {filter}
+        </button>
+      ))}
     </div>
   );
 };
