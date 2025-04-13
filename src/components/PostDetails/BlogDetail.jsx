@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { postsData } from "../Data/postsData"; // Ensure correct import
+import Footer from "../UI/Footer"; 
 
 function BlogDetails() {
   const { postId } = useParams(); // Retrieve postId from URL
@@ -11,7 +12,8 @@ function BlogDetails() {
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <div>
+      <div className="container mx-auto p-6 mb-6">
       <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
       <img src={post.mainImage} alt={post.title} className="w-full object-cover mb-4" />
       <p className="text-sm text-gray-500">
@@ -19,6 +21,9 @@ function BlogDetails() {
       </p>
       <p className="mt-4 text-gray-700">{post.content1}</p>
       <p className="mt-4 text-gray-600">{post.content2}</p>
+      
+    </div>
+    <Footer />
     </div>
   );
 }
