@@ -48,6 +48,7 @@ function App() {
         {/* BlogDetails route with dynamic postId */}
         <Route path="/blog/:postId" element={<BlogDetails />} />
         <Route path="/post/:postId" element={<BlogDetails />} />
+        <Route path="/posts/:id" element={<BlogDetails />} />
 
         {/* edit profile  */}
         <Route path="/profile" element={<EditProfileForm />} />

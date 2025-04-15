@@ -1,4 +1,3 @@
-// src/components/LikeTable.jsx
 import ActionButtons from './ActionButtons';
 
 const LikeTable = ({ likes, renderActions }) => (

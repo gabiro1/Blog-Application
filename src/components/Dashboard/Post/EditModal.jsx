@@ -1,56 +1,96 @@
 import React, { useState, useEffect } from 'react';
 
 const EditModal = ({ isOpen, post, onClose, onSave }) => {
-  const [editedPost, setEditedPost] = useState(post);
+  const [editedPost, setEditedPost] = useState({
+    title: '',
+    author: '',
+    category: '',
+    status: '',
+    createdAt: '',
+    updatedAt: ''
+  });
 
   useEffect(() => {
-    setEditedPost(post);
+    if (post) {
+      setEditedPost(post);
+    }
   }, [post]);
 
   if (!isOpen || !post) return null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedPost({ ...editedPost, [name]: value });
+    setEditedPost((prev) => ({
+      ...prev,
+      [name]: value,
+      updatedAt: new Date().toISOString().slice(0, 16).replace('T', ' '), // update time
+    }));
   };
 
-  const handleSave = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     onSave(editedPost);
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-black/40">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-[500px]">
-        <h2 className="text-xl font-bold mb-4 text-gray-800">Edit Post</h2>
-        <input
-          type="text"
-          name="title"
-          value={editedPost.title}
-          onChange={handleChange}
-          className="w-full border p-2 mb-4 rounded"
-          placeholder="Title"
-        />
-        <input
-          type="text"
-          name="author"
-          value={editedPost.author}
-          onChange={handleChange}
-          className="w-full border p-2 mb-4 rounded"
-          placeholder="Author"
-        />
-        <input
-          type="text"
-          name="category"
-          value={editedPost.category}
-          onChange={handleChange}
-          className="w-full border p-2 mb-4 rounded"
-          placeholder="Category"
-        />
-        {/* Add more fields if needed */}
-        <div className="flex justify-end gap-4">
-          <button onClick={onClose} className="px-4 py-2 bg-gray-200 rounded">Cancel</button>
-          <button onClick={handleSave} className="px-4 py-2 bg-green-700 text-white rounded">Save</button>
-        </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+      <div className="bg-white rounded-md w-full max-w-md p-6 shadow-lg">
+        <h2 className="text-xl font-semibold mb-4">Edit Blog Post</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="title"
+            value={editedPost.title}
+            onChange={handleChange}
+            className="w-full border px-4 py-2 rounded"
+            placeholder="Title"
+            required
+          />
+          <input
+            type="text"
+            name="author"
+            value={editedPost.author}
+            onChange={handleChange}
+            className="w-full border px-4 py-2 rounded"
+            placeholder="Author"
+            required
+          />
+          <input
+            type="text"
+            name="category"
+            value={editedPost.category}
+            onChange={handleChange}
+            className="w-full border px-4 py-2 rounded"
+            placeholder="Category"
+            required
+          />
+          <select
+            name="status"
+            value={editedPost.status}
+            onChange={handleChange}
+            className="w-full border px-4 py-2 rounded"
+            required
+          >
+            <option value="Published">Published</option>
+            <option value="Draft">Draft</option>
+          </select>
+
+          <div className="flex justify-end gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -4,30 +4,21 @@ import FilterBar from "./FilterBar";
 import SubscriberTable from "./SubscriberTable";
 import ActionButtons from "./ActionButtons";
 import Modal from "./Modal";
-import { exportToCSV } from "../../../utils/exportToCSV"; 
+import { exportToCSV } from "../../../utils/exportToCSV";
+import { subscribersData } from "../../Data/subscribersData";
 
-const initialSubscribers = [
-  { id: 1, name: "David Brown", email: "david@example.com", status: "Subscriber" },
-  { id: 2, name: "Sophia Lee", email: "sophia@example.com", status: "Unsubscriber" },
-  { id: 3, name: "James Carter", email: "james@example.com", status: "Active" },
-  { id: 4, name: "Olivia Martin", email: "olivia@example.com", status: "Subscriber" }
-];
-
-const Subscribers = () => {
-  const [subscribers, setSubscribers] = useState(initialSubscribers);
+const SubscriberDashboard = () => {
+  const [subscribers, setSubscribers] = useState(subscribersData);
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [subscriberToDelete, setSubscriberToDelete] = useState(null);
   const [editableSubscriber, setEditableSubscriber] = useState(null);
 
-  // Handle filter change
   const handleFilter = (filter) => setActiveFilter(filter);
 
-  // Handle search
   const handleSearch = (e) => setSearchTerm(e.target.value);
 
-  // Filter subscribers based on status and search term
   const filteredSubscribers = subscribers.filter((subscriber) => {
     const matchesSearchTerm =
       subscriber.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -39,7 +30,6 @@ const Subscribers = () => {
     return matchesSearchTerm && matchesStatusFilter;
   });
 
-  // Delete subscriber
   const deleteSubscriber = (id) => {
     setSubscribers((prevSubscribers) =>
       prevSubscribers.filter((subscriber) => subscriber.id !== id)
@@ -47,12 +37,10 @@ const Subscribers = () => {
     setModalVisible(false);
   };
 
-  // Edit subscriber
   const editSubscriber = (subscriber) => {
     setEditableSubscriber(subscriber);
   };
 
-  // Save edited subscriber
   const saveEditedSubscriber = (editedSubscriber) => {
     setSubscribers((prevSubscribers) =>
       prevSubscribers.map((subscriber) =>
@@ -62,7 +50,6 @@ const Subscribers = () => {
     setEditableSubscriber(null);
   };
 
-  // Export to CSV
   const handleExport = () => {
     exportToCSV(filteredSubscribers);
   };
@@ -102,7 +89,7 @@ const Subscribers = () => {
           }}
         />
 
-        {/* Edit Subscriber Modal */}
+        {/* Edit Modal */}
         {editableSubscriber && (
           <Modal
             isOpen={editableSubscriber !== null}
@@ -125,4 +112,4 @@ const Subscribers = () => {
   );
 };
 
-export default Subscribers;
+export default SubscriberDashboard;

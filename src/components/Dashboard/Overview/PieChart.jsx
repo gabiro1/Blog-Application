@@ -1,4 +1,3 @@
-// src/components/PieChart.jsx
 const PieChart = () => (
     <div className="flex flex-col items-center justify-center mt-10 md:mt-0">
       <div className="w-40 h-40 rounded-full bg-gradient-to-tr from-gray-800 to-gray-500 relative">

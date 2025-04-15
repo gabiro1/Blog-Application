@@ -45,9 +45,9 @@ const Modal = ({ isOpen, onClose, onSave, onConfirm, subscriber, isDeleteModal }
                 onChange={(e) => setStatus(e.target.value)}
                 className="border rounded-md w-full"
               >
-                <option value="Subscriber">Subscriber</option>
-                <option value="Unsubscriber">Unsubscriber</option>
                 <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+                <option value="Pending">Pending</option>
               </select>
               <div className="mt-4 flex gap-4">
                 <button onClick={onClose} className="px-4 py-2 bg-gray-500 text-white rounded-md">Cancel</button>

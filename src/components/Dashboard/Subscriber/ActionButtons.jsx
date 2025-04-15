@@ -1,21 +1,25 @@
-import { FiTrash2, FiEdit2 } from "react-icons/fi";
+import React from "react";
+import { Pencil, Trash2 } from "lucide-react";
 
-const ActionButtons = ({ onEdit, onDelete }) => (
-    <div className="flex space-x-2">
+const ActionButtons = ({ onEdit, onDelete }) => {
+  return (
+    <div className="flex items-center justify-end space-x-2">
       <button
         onClick={onEdit}
-        className="px-4 py-2  text-dark rounded-md"
+        className="text-blue-600 hover:text-blue-800 transition"
+        title="Edit"
       >
-        <FiEdit2 size={16} />
+        <Pencil size={18} />
       </button>
       <button
         onClick={onDelete}
-        className="  text-dark rounded-md "
+        className="text-red-600 hover:text-red-800 transition"
+        title="Delete"
       >
-        <FiTrash2 size={16} />
+        <Trash2 size={18} />
       </button>
     </div>
   );
-  
-  export default ActionButtons;
-  
+};
+
+export default ActionButtons;

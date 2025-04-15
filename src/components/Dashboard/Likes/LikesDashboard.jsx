@@ -4,15 +4,7 @@ import LikeTable from '../Likes/LikesTable';
 import FilterBar from '../Likes/FilterBar';
 import ActionButtons from '../Likes/ActionButtons';
 import Modal from '../Likes/Modal';
-import { exportToCSV } from '../../../utils/exportToCSV';
-
-// Dummy data for likes
-const likesData = [
-  { id: 1, user: 'David Brown', likedPostTitle: 'UX review presentations', date: '2025-04-05', status: 'Approved' },
-  { id: 2, user: 'Sophia Lee', likedPostTitle: 'What is Wireframing?', date: '2025-04-06', status: 'Pending' },
-  { id: 3, user: 'James Carter', likedPostTitle: 'Keep Hackers Out', date: '2025-04-07', status: 'Report' },
-  { id: 4, user: 'Olivia Martin', likedPostTitle: 'REST APIs Simplified', date: '2025-04-08', status: 'Approved' }
-];
+import likesData from '../../Data/likesData';
 
 const Likes = () => {
   const [likes, setLikes] = useState(likesData);
@@ -29,9 +21,8 @@ const Likes = () => {
 
   // Handle delete like
   const deleteLike = (id) => {
-    // Remove the like by filtering out the one with the given id
     setLikes((prevLikes) => prevLikes.filter((like) => like.id !== id));
-    setModalVisible(false); // Close the modal after deletion
+    setModalVisible(false);
   };
 
   // Filter likes based on active filter and search term
@@ -45,16 +36,61 @@ const Likes = () => {
     }
 
     const matchesStatusFilter = like.status === activeFilter;
-
     return matchesSearchTerm && matchesStatusFilter;
   });
 
-  const handleExport = () => {
-    exportToCSV(filteredLikes);
-  };
+  // Apply the selected filter
+  let sortedLikes = [...filteredLikes];
+  if (activeFilter === 'Most liked post') {
+    sortedLikes = sortedLikes.sort((a, b) => b.likesCount - a.likesCount);
+  } else if (activeFilter === 'Recent likes') {
+    sortedLikes = sortedLikes.sort((a, b) => new Date(b.date) - new Date(a.date));
+  } else if (activeFilter === 'Top user') {
+    // Ensure there is data before using reduce
+    if (sortedLikes.length > 0) {
+      const userLikes = sortedLikes.reduce((acc, like) => {
+        acc[like.user] = (acc[like.user] || 0) + like.likesCount;
+        return acc;
+      }, {});
+      
+      const topUser = Object.keys(userLikes).reduce((a, b) =>
+        userLikes[a] > userLikes[b] ? a : b
+      );
+      sortedLikes = sortedLikes.filter(like => like.user === topUser);
+    }
+  }
 
-  // Optional: Sorting by date (most recent first)
-  const sortedLikes = filteredLikes.sort((a, b) => new Date(b.date) - new Date(a.date));
+  const handleExport = () => {
+    // Define headers
+    const headers = ['User', 'Liked Post Title', 'Status'];
+
+    // Prepare rows of data
+    const rows = filteredLikes.map(like => [
+      like.user,
+      like.likedPostTitle,
+      like.status,
+    ]);
+
+    // Create CSV content
+    let csvContent = "data:text/csv;charset=utf-8,";
+
+    // Add headers
+    csvContent += headers.join(",") + "\n";
+
+    // Add rows
+    rows.forEach((row) => {
+      csvContent += row.join(",") + "\n";
+    });
+
+    // Create a download link and trigger download
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "likes_data.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="flex">
@@ -70,9 +106,10 @@ const Likes = () => {
             placeholder="Search"
             className="flex-grow border border-gray-300 rounded-md px-4 py-2 w-full"
           />
-          <button 
+          <button
             onClick={handleExport}
-          className="bg-green-800 text-white font-medium px-6 py-2 rounded-md hover:bg-green-700">
+            className="bg-green-800 text-white font-medium px-6 py-2 rounded-md hover:bg-green-700"
+          >
             Export
           </button>
         </div>

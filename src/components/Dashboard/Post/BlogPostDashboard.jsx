@@ -1,51 +1,79 @@
 import React, { useState } from 'react';
+import Sidebar from '../UI Dashboard/Sidebar';
 import PostTabNav from './PostTabNav';
 import BlogPostTable from './BlogPostTable';
-import Sidebar from '../UI Dashboard/Sidebar';
-import { exportToCSV } from '../../../utils/exportToCSV';
 import DeleteModal from './DeleteModal';
 import EditModal from './EditModal';
+import NewPostModal from './NewPostModal'; // ✅ Use your reusable modal here
+import { postsData } from '../../Data/postsData';
 
 const BlogPostDashboard = () => {
   const [activeTab, setActiveTab] = useState('Published');
   const [searchTerm, setSearchTerm] = useState('');
   const [postToEdit, setPostToEdit] = useState(null);
   const [postToDelete, setPostToDelete] = useState(null);
-  const [posts, setPosts] = useState([
-    { id: 1, title: 'UX review presentations', author: 'David Brown', category: 'UI & UX Design', status: 'Draft', createdAt: '2025-03-25 10:00', updatedAt: '2025-03-25 10:00' },
-    { id: 2, title: 'What is Wireframing?', author: 'Sophia Lee', category: 'Coding', status: 'Published', createdAt: '2025-03-25 10:00', updatedAt: '2025-03-25 10:00' },
-    { id: 3, title: 'Understanding CSS Flexbox', author: 'Michael Smith', category: 'Web Development', status: 'Draft', createdAt: '2025-03-25 10:00', updatedAt: '2025-03-25 10:00' },
-    { id: 4, title: 'JavaScript ES6 Features', author: 'Emily Johnson', category: 'JavaScript', status: 'Published', createdAt: '2025-03-25 10:00', updatedAt: '2025-03-25 10:00' },
-  ]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [posts, setPosts] = useState(
+    postsData.map((post, index) => ({
+      ...post,
+      id: post.id || index + 1,
+      status: index % 2 === 0 ? 'Published' : 'Draft',
+    }))
+  );
 
   const handleSearch = (e) => setSearchTerm(e.target.value);
 
-  const handleEdit = (post) => {
-    setPostToEdit(post);
-  };
+  const handleEdit = (post) => setPostToEdit(post);
 
   const handleSaveEdit = (updatedPost) => {
-    setPosts((prevPosts) =>
-      prevPosts.map((p) => (p.id === updatedPost.id ? updatedPost : p))
+    setPosts((prev) =>
+      prev.map((p) => (p.id === updatedPost.id ? updatedPost : p))
     );
     setPostToEdit(null);
   };
 
-  const handleDelete = (post) => {
-    setPostToDelete(post);
-  };
+  const handleDelete = (post) => setPostToDelete(post);
 
   const confirmDelete = () => {
     setPosts(posts.filter((p) => p.id !== postToDelete.id));
     setPostToDelete(null);
   };
 
-  const handleExport = () => {
-    if (posts.length === 0) {
-      console.error('No posts available to export.');
+  const exportToCSV = (posts) => {
+    if (!Array.isArray(posts)) {
+      console.error('Invalid posts data. Expected an array, got:', typeof posts, posts);
       return;
     }
-    exportToCSV(posts);
+
+    const headers = ['Id', 'Title', 'Author', 'Category', 'Status'];
+    const rows = posts.map((post) => [
+      post.id,
+      post.title,
+      post.author,
+      post.category,
+      post.status,
+    ]);
+
+    let csvContent = 'data:text/csv;charset=utf-8,';
+    csvContent += headers.join(',') + '\n';
+    rows.forEach((row) => {
+      csvContent += row.map((field) => `"${String(field).replace(/"/g, '""')}"`).join(',') + '\n';
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'blog_posts.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleAddNewPost = (newPostData) => {
+    const newPostWithId = { ...newPostData, id: posts.length + 1 };
+    setPosts((prev) => [...prev, newPostWithId]);
+    setIsModalOpen(false);
   };
 
   const filteredPosts = posts.filter(
@@ -67,11 +95,14 @@ const BlogPostDashboard = () => {
           placeholder="Search by Name or Email"
           className="flex-grow border outline-none border-gray-300 rounded-md ml-5 mr-5 px-4 py-2 w-auto"
         />
-        <button className="bg-green-700 text-white px-6 py-2.5 mr-3 rounded-md hover:bg-green-800 text-sm font-medium">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="bg-green-700 text-white px-6 py-2.5 mr-3 rounded-md hover:bg-green-800 text-sm font-medium"
+        >
           New Post
         </button>
         <button
-          onClick={handleExport}
+          onClick={() => exportToCSV(posts)}
           className="bg-green-700 text-white font-medium px-6 py-2 rounded-md hover:bg-green-800"
         >
           Export
@@ -79,7 +110,19 @@ const BlogPostDashboard = () => {
       </div>
 
       <PostTabNav activeTab={activeTab} setActiveTab={setActiveTab} />
-      <BlogPostTable posts={filteredPosts} onEdit={handleEdit} onDelete={handleDelete} />
+      <BlogPostTable
+        posts={filteredPosts}
+        activeTab={activeTab}
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+      />
+
+      {/* ✅ Reusable modal for adding new post */}
+      <NewPostModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleAddNewPost}
+      />
 
       <EditModal
         isOpen={!!postToEdit}

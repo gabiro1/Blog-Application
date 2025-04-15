@@ -1,18 +1,20 @@
-// src/utils/exportToCSV.js
-export const exportToCSV = (data) => {
-    const headers = ["ID", "Name", "Email", "Status"];
-    const rows = data.map((item) => [item.id, item.name, item.email, item.status]);
-  
-    const csvContent = [
-      headers.join(","),
-      ...rows.map((row) => row.join(","))
-    ].join("\n");
-  
-    const blob = new Blob([csvContent], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "subscribers.csv";
-    a.click();
-  };
-  
+// utils/exportToCSV.js
+export const exportToCSV = (data, filename = 'writers.csv') => {
+  if (!data || !data.length) return;
+
+  const headers = Object.keys(data[0]);
+  const csvRows = [
+    headers.join(','), // Header row
+    ...data.map((row) =>
+      headers.map((field) => `"${row[field]}"`).join(',')
+    ),
+  ];
+
+  const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.click();
+};

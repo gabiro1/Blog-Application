@@ -1,19 +1,12 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import SearchBar from './SearchBar';
 import FilterBar from './FilterBar';
 import CommentTable from './CommentTable';
 import Sidebar from '../UI Dashboard/Sidebar';
 import ActionButtons from './ActionButtons';
-import Modal from './Modal';  // Delete Modal
-import EditModal from './EditModal';  // Import Edit Modal
-import { exportToCSV } from '../../../utils/exportToCSV';
-
-const commentsData = [
-  { id: 1, user: 'David Brown', comment: 'Great article!', title: 'UX review presentations', status: 'Approved' },
-  { id: 2, user: 'Sophia Lee', comment: 'Thanks for this!', title: 'What is Wireframing?', status: 'Pending' },
-  { id: 3, user: 'James Carter', comment: 'This is spam content', title: 'Keep Hackers Out', status: 'Report' },
-  { id: 4, user: 'Olivia Martin', comment: 'Can you explain more?', title: 'REST APIs Simplified', status: 'Approved' }
-];
+import Modal from './Modal';  
+import EditModal from './EditModal';  
+import commentsData from '../../Data/commentsData';  
 
 const Comments = () => {
   const [comments, setComments] = useState(commentsData);
@@ -22,7 +15,7 @@ const Comments = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
-  const [commentToEdit, setCommentToEdit] = useState(null); // State for the comment being edited
+  const [commentToEdit, setCommentToEdit] = useState(null);
 
   const handleSearch = (e) => setSearchTerm(e.target.value);
   const handleFilter = (filter) => setActiveFilter(filter);
@@ -51,24 +44,41 @@ const Comments = () => {
           : comment
       )
     );
-    setEditModalVisible(false); // Close the edit modal after saving
+    setEditModalVisible(false); 
   };
 
-
   const filteredComments = comments.filter((comment) => {
-    // First, check if the search term matches the user or title
     const matchesSearchTerm = comment.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
                               comment.title.toLowerCase().includes(searchTerm.toLowerCase());
-  
-    // Then, check if the status filter matches
     const matchesStatusFilter = activeFilter === 'All' || comment.status === activeFilter;
-  
-    // Return true if both conditions are met
     return matchesSearchTerm && matchesStatusFilter;
   });
-  
+
+  // Export function to convert data to CSV and trigger download
   const handleExport = () => {
-    exportToCSV(filteredComments);
+    const headers = ['ID', 'User', 'Comment', 'Title', 'Status'];
+    const rows = filteredComments.map(comment => [
+      comment.id,
+      comment.user,
+      comment.comment,
+      comment.title,
+      comment.status
+    ]);
+    
+    const csvContent = [
+      headers.join(','), // Header row
+      ...rows.map(row => row.join(',')) // Data rows
+    ].join('\n');
+
+    // Create a Blob and trigger a download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'comments.csv');
+      link.click();
+    }
   };
 
   return (
@@ -79,13 +89,14 @@ const Comments = () => {
       <div className="p-6 space-y-6 ml-64 w-full">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <h2 className="text-2xl font-bold">Comment</h2>
+          <h2 className="text-2xl font-bold">Comments</h2>
           <div className="flex flex-grow max-w-xl w-full">
             <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
           </div>
-          <button 
-          onClick={handleExport}
-          className="bg-green-800 text-white font-medium px-6 py-2 rounded-md hover:bg-green-700">
+          <button
+            onClick={handleExport}
+            className="bg-green-800 text-white font-medium px-6 py-2 rounded-md hover:bg-green-700"
+          >
             Export
           </button>
         </div>
