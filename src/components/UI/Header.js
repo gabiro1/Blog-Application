@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import logo from "../../assets/images/Logo.png";
@@ -9,6 +9,26 @@ function Header({ isAuthenticated, onLogout, userProfilePic }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  // Create a ref for the LoginModal to detect clicks outside of it
+  const loginModalRef = useRef(null);
+
+  // Close the modal when clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (loginModalRef.current && !loginModalRef.current.contains(event.target)) {
+        setShowLogin(false); 
+      }
+    };
+
+    // Add event listener for clicks
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []); 
 
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-r from-[#EEF1F8] to-[#0E552D] text-white shadow-md">
@@ -30,7 +50,7 @@ function Header({ isAuthenticated, onLogout, userProfilePic }) {
               <img
                 src={userProfilePic}
                 alt="Profile"
-                className="w-10 h-10 rounded-full object-cover border-2 border-white cursor-pointer"
+                className="w-10 h-10 rounded-full object-cover border-2 cursor-pointer"
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
               />
               {showProfileMenu && <ProfileMenu onLogout={onLogout} />}
@@ -95,7 +115,11 @@ function Header({ isAuthenticated, onLogout, userProfilePic }) {
       )}
 
       {/* Login Modal */}
-      <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
+      {showLogin && (
+        <div ref={loginModalRef}>
+          <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
+        </div>
+      )}
     </header>
   );
 }

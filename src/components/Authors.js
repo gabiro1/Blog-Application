@@ -14,13 +14,17 @@ function Authors() {
   ];
 
   return (
-    <section className="authors-section p-16 bg-gray-50">
-      <h2 className="title text-3xl font-semibold text-center mb-8">List of Authors</h2>
+    <section className="authors-section p-25 bg-gray-50">
+      <h2 className="title text-3xl font-semibold text-center mb-8">
+        List of Authors
+      </h2>
       <div className="author-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
         {authors.map((author, index) => (
           <div
             key={index}
-            className={`author-card text-center p-6 border border-gray-300 rounded-lg shadow-lg transition-all hover:shadow-xl ${index === 1 ? "bg-gray-100" : "bg-white"}`}
+            className={`author-card text-center p-6 border border-gray-300 rounded-lg shadow-lg transition-all hover:shadow-xl ${
+              index === 1 ? "bg-gray-100" : "bg-white"
+            }`}
           >
             {/* Author Image */}
             <img
@@ -29,15 +33,17 @@ function Authors() {
               className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
             />
             {/* Author Name */}
-            <h3 className="author-name text-xl font-semibold text-gray-800">{author.name}</h3>
+            <h3 className="author-name text-xl font-semibold text-gray-800">
+              {author.name}
+            </h3>
             {/* Author Role */}
             <p className="author-role text-sm text-gray-500">{author.role}</p>
             {/* Social Media Icons */}
             <div className="social-icons flex justify-center gap-4 mt-4">
-              <FaFacebook className="text-xl  cursor-pointer" />
-              <FaTwitter className="text-xl  cursor-pointer" />
-              <FaInstagram className="text-xl cursor-pointer" />
-              <FaLinkedin className="text-xl  cursor-pointer" />
+              <FaFacebook className="text-xl text-[#7E8C79] cursor-pointer" />
+              <FaTwitter className="text-xl text-[#7E8C79] cursor-pointer" />
+              <FaInstagram className="text-xl text-[#7E8C79] cursor-pointer" />
+              <FaLinkedin className="text-xl text-[#7E8C79] cursor-pointer" />
             </div>
           </div>
         ))}

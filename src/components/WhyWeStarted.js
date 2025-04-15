@@ -1,5 +1,6 @@
 import React from "react";
 import storyImage from "../assets/images/Story/story.jpg";
+import { Link } from "react-router-dom";
 
 function WhyWeStarted() {
   return (
@@ -24,11 +25,16 @@ function WhyWeStarted() {
               It started out as a simple idea and evolved into our passion
             </h2>
             <p className="text-[#757B8A] text-base leading-relaxed mb-8">
-              Our mission began with a simple goal—helping IT enthusiasts and professionals stay informed, learn, and grow in the ever-evolving tech landscape. Join us in building a community of innovation and learning.
+              Our mission began with a simple goal—helping IT enthusiasts and
+              professionals stay informed, learn, and grow in the ever-evolving
+              tech landscape. Join us in building a community of innovation and
+              learning.
             </p>
-            <button className="bg-[#136B41] hover:bg-[#0f5a37] transition text-white font-semibold py-3 px-6 rounded-md text-base shadow-md">
-              Discover our story &gt;
-            </button>
+            <Link to="/about">
+              <button className="bg-[#136B41] hover:bg-[#0f5a37] transition text-white font-semibold py-3 px-6 rounded-md text-base shadow-md">
+                Discover our story &gt;
+              </button>
+            </Link>
           </div>
         </div>
       </div>

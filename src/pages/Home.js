@@ -6,13 +6,13 @@ import About from "../components/about/About";
 import WhyWeStarted from "../components/WhyWeStarted";
 import Authors from "../components/Authors";
 import Footer from "../components/UI/Footer";
-import BlogPage from "./Blog";
-
-
+import JoinTeamSection from "../components/about/JoinTeamSection";
+// import BlogPage from "./Blog";
 
 function Home({ isAuthenticated, setIsAuthenticated }) {
   return (
     <>
+      {/* Uncomment the Header if needed */}
       {/* <Header isAuthenticated={isAuthenticated} /> */}
       <Hero />
       <Featured />
@@ -20,6 +20,7 @@ function Home({ isAuthenticated, setIsAuthenticated }) {
       <About />
       <WhyWeStarted />
       <Authors />
+      <JoinTeamSection />
       <Footer />
     </>
   );

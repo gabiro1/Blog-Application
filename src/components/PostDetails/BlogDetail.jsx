@@ -1,11 +1,12 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { postsData } from "../Data/postsData"; // Ensure correct import
+import { postsData } from "../Data/postsData"; 
 import Footer from "../UI/Footer"; 
+import CommentSection from "./CommentSection"; 
 
 function BlogDetails() {
-  const { postId } = useParams(); // Retrieve postId from URL
-  const post = postsData.find(post => post.id === parseInt(postId)); // Find the post by id
+  const { postId } = useParams(); 
+  const post = postsData.find(post => post.id === parseInt(postId)); // Find the post by using id
 
   if (!post) {
     return <p className="text-center text-red-500 text-lg">Post not found</p>;
@@ -21,6 +22,7 @@ function BlogDetails() {
       </p>
       <p className="mt-4 text-gray-700">{post.content1}</p>
       <p className="mt-4 text-gray-600">{post.content2}</p>
+      <CommentSection />
       
     </div>
     <Footer />
