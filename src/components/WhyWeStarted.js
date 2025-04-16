@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 function WhyWeStarted() {
   return (
     <section className="w-full bg-white">
-      <div className="flex flex-col lg:flex-row h-[500px]">
+      <div className="flex flex-col lg:flex-row min-h-[500px]">
         {/* Image Side */}
-        <div className="lg:w-1/2 w-full h-[500px]">
+        <div className="lg:w-1/2 w-full h-64 lg:h-auto">
           <img
             src={storyImage}
             alt="Mother and child on sofa"
@@ -15,8 +15,8 @@ function WhyWeStarted() {
           />
         </div>
 
-        {/* White Box with Centered Content */}
-        <div className="lg:w-1/2 w-96 flex items-center justify-center bg-white px-6 lg:px-16 py-10 h-[500px]">
+        {/* Content Side */}
+        <div className="lg:w-1/2 w-full flex items-center justify-center bg-white px-6 lg:px-16 py-10">
           <div className="max-w-xl">
             <p className="uppercase text-sm tracking-wider text-gray-500 mb-4">
               Why we started

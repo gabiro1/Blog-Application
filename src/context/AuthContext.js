@@ -5,14 +5,12 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  // Load user from localStorage on first load
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser) setUser(storedUser);
   }, []);
 
   const login = (email, password) => {
-    // Simulate validation — add real backend/API logic later
     if (!email || !password) return { error: "All fields are required." };
 
     const existingUser = JSON.parse(localStorage.getItem('user'));

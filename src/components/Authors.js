@@ -14,36 +14,35 @@ function Authors() {
   ];
 
   return (
-    <section className="authors-section p-25 bg-gray-50">
-      <h2 className="title text-3xl font-semibold text-center mb-8">
-        List of Authors
-      </h2>
-      <div className="author-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
+    <section
+      className="p-10 min-h-screen flex flex-col items-center justify-center text-white mt-10"
+      style={{
+        backgroundColor: "#111927",
+        backgroundImage: `
+          radial-gradient(at 47% 33%, hsl(162, 77%, 40%) 0, transparent 59%),
+          radial-gradient(at 82% 65%, hsl(218, 39%, 11%) 0, transparent 70%)
+        `,
+      }}
+    >
+      <h2 className="text-3xl font-semibold text-center mb-12">List of Authors</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 w-full max-w-6xl px-4">
         {authors.map((author, index) => (
           <div
             key={index}
-            className={`author-card text-center p-6 border border-gray-300 rounded-lg shadow-lg transition-all hover:shadow-xl ${
-              index === 1 ? "bg-gray-100" : "bg-white"
-            }`}
+            className="backdrop-blur-xl bg-[rgba(12,15,19,0.5)] border border-[rgba(255,255,255,0.125)] rounded-2xl p-6 shadow-lg text-center hover:shadow-2xl transition-all duration-300"
           >
-            {/* Author Image */}
             <img
               src={author.img}
               alt={author.name}
-              className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
+              className="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-2 border-white/20"
             />
-            {/* Author Name */}
-            <h3 className="author-name text-xl font-semibold text-gray-800">
-              {author.name}
-            </h3>
-            {/* Author Role */}
-            <p className="author-role text-sm text-gray-500">{author.role}</p>
-            {/* Social Media Icons */}
-            <div className="social-icons flex justify-center gap-4 mt-4">
-              <FaFacebook className="text-xl text-[#7E8C79] cursor-pointer" />
-              <FaTwitter className="text-xl text-[#7E8C79] cursor-pointer" />
-              <FaInstagram className="text-xl text-[#7E8C79] cursor-pointer" />
-              <FaLinkedin className="text-xl text-[#7E8C79] cursor-pointer" />
+            <h3 className="text-xl font-semibold">{author.name}</h3>
+            <p className="text-sm text-gray-300">{author.role}</p>
+            <div className="flex justify-center gap-4 mt-4 text-gray-400">
+              <FaFacebook className="hover:text-cyan-400 cursor-pointer" />
+              <FaTwitter className="hover:text-cyan-400 cursor-pointer" />
+              <FaInstagram className="hover:text-cyan-400 cursor-pointer" />
+              <FaLinkedin className="hover:text-cyan-400 cursor-pointer" />
             </div>
           </div>
         ))}
