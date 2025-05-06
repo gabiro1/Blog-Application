@@ -3,7 +3,7 @@ import Sidebar from '../UI Dashboard/Sidebar';
 import FilterBar from './FilterBar';
 import WriterTable from './WriterTable';
 import WriterModal from './WriterModal';
-import { exportToCSV } from '../../../utils/exportToCSV';
+// import { exportToCSV } from '../../../utils/exportToCSV';
 import writersData from '../../Data/writersData';
 
 const Writers = () => {
@@ -58,7 +58,7 @@ const Writers = () => {
     setModalVisible(false);
   };
 
-  const handleExport = () => exportToCSV(filteredWriters);
+  // const handleExport = () => exportToCSV(filteredWriters);
 
   return (
     <div className="flex">
@@ -83,7 +83,7 @@ const Writers = () => {
             Add Writer
           </button>
           <button
-            onClick={handleExport}
+            // onClick={handleExport}
             className="bg-green-800 text-white font-medium px-6 py-2 rounded-md hover:bg-green-700"
           >
             Export

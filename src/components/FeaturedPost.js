@@ -29,7 +29,7 @@ function FeaturedPost() {
           >
             Read More &gt;
           </Link>
-        </div>
+        </div> 
       </div>
     </section>
   );

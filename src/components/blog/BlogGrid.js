@@ -13,7 +13,7 @@ const BlogGrid = ({ filteredPosts }) => {
     // Fetch posts from the backend API when the component mounts
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/post');  
+        const response = await axios.get('http://localhost:5000/api');  
         setPosts(response.data);  
       } catch (err) {
         setError('Failed to load posts');  

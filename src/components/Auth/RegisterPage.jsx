@@ -1,21 +1,30 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import logo from '../../assets/images/Logo - icon.png';
+import { Link,useNavigate } from "react-router-dom";
+import logo from "../../assets/images/Logo - icon.png";
 import { useAuth } from "../../context/AuthContext";
 import Footer from "../UI/Footer";
+import axios from "axios";
+
+
 
 function RegisterPage() {
   const { register } = useAuth();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleRegister = async () => {
-    if (!email || !firstName || !lastName || !password || !confirmPassword) {
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setError(""); // Clear previous errors
+    setSuccess(""); // Clear previous success messages
+
+    if (!email || !first_name || !last_name || !password || !confirmPassword) {
       setError("All fields are required.");
       return;
     }
@@ -25,33 +34,42 @@ function RegisterPage() {
       return;
     }
 
-    const username = `${firstName} ${lastName}`;
-    const result = await register(email, password, username);
+    try {
+      const response = await axios.post("http://localhost:5000/api/user/register", {
+        email,
+        password,
+        username: `${first_name} ${last_name}`,
+      });
 
-    if (result.error) {
-      setError(result.error);
-    } else {
-      setError("");
-      // Optionally redirect to login after successful registration
-      // navigate("/login");
+      // Assuming the response contains a success message
+      setSuccess("Registration successful! Redirecting to login...");
+      setTimeout(() => navigate("/login"), 2000); // Redirect to login page after 2 seconds
+    } catch (err) {
+      // Handle errors (e.g., email already exists)
+      setError(err.response?.data?.message || "Registration failed. Please try again.");
     }
   };
 
   return (
+    <div>
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white rounded-xl p-8 w-full max-w-md shadow-lg">
-        <h2 className="text-center text-gray-700 text-lg font-medium">Welcome to</h2>
-        <div className="flex items-center justify-center mb-2">
+      <div className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md">
+        <h2 className="text-center text-lg font-medium text-gray-800">Welcome to</h2>
+        <div className="flex justify-center my-2">
           <img src={logo} alt="Logo" className="h-10" />
         </div>
-        <p className="text-center text-sm text-gray-500 mb-6">Enter your information below to continue</p>
+        <p className="text-center text-sm text-gray-500 mb-6">
+          Enter your information below to continue
+        </p>
 
-        {error && <div className="text-red-600 text-sm mb-3 text-center">{error}</div>}
+        {error && (
+          <div className="text-red-600 text-sm mb-4 text-center">{error}</div>
+        )}
 
         <input
           type="email"
           placeholder="Email"
-          className="w-full mb-4 px-4 py-2 border rounded-lg bg-gray-100"
+          className="w-full px-4 py-2 mb-4 border rounded-lg bg-gray-100 focus:outline-none"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -60,15 +78,15 @@ function RegisterPage() {
           <input
             type="text"
             placeholder="First name"
-            className="w-1/2 px-4 py-2 border rounded-lg bg-gray-100"
-            value={firstName}
+            className="w-1/2 px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none"
+            value={first_name}
             onChange={(e) => setFirstName(e.target.value)}
           />
           <input
             type="text"
             placeholder="Last name"
-            className="w-1/2 px-4 py-2 border rounded-lg bg-gray-100"
-            value={lastName}
+            className="w-1/2 px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none"
+            value={last_name}
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
@@ -77,37 +95,36 @@ function RegisterPage() {
           <input
             type="password"
             placeholder="Create Password"
-            className="w-1/2 px-4 py-2 border rounded-lg bg-gray-100"
+            className="w-1/2 px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <input
             type="password"
             placeholder="Confirm Password"
-            className="w-1/2 px-4 py-2 border rounded-lg bg-gray-100"
+            className="w-1/2 px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
 
         <button
-          className="w-full bg-green-800 text-white py-2 rounded-lg mb-4"
+          className="w-full bg-green-800 text-white py-2 rounded-lg mb-4 hover:bg-green-900"
           onClick={handleRegister}
         >
           Create Account
         </button>
 
-        <p className="text-center text-sm text-gray-500">
+        <p className="text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-green-800 font-medium hover:underline"
-          >
+          <Link to="/login" className="text-green-800 font-medium hover:underline">
             Login
           </Link>
         </p>
       </div>
-      <Footer  />
+      
+    </div>
+    <Footer />
     </div>
   );
 }

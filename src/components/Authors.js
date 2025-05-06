@@ -17,11 +17,11 @@ function Authors() {
     <section
       className="p-10 min-h-screen flex flex-col items-center justify-center text-white mt-10"
       style={{
-        backgroundColor: "#111927",
-        backgroundImage: `
-          radial-gradient(at 47% 33%, hsl(162, 77%, 40%) 0, transparent 59%),
-          radial-gradient(at 82% 65%, hsl(218, 39%, 11%) 0, transparent 70%)
-        `,
+        backgroundColor: "#111927"
+        // backgroundImage: `
+        //   radial-gradient(at 47% 33%, hsl(162, 77%, 40%) 0, transparent 59%),
+        //   radial-gradient(at 82% 65%, hsl(218, 39%, 11%) 0, transparent 70%)
+        // `,
       }}
     >
       <h2 className="text-3xl font-semibold text-center mb-12">List of Authors</h2>

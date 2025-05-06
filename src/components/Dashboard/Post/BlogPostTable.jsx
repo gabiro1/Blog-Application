@@ -1,18 +1,44 @@
-import React from 'react';
-import StatusBadge from './StatusBadge';  // Assuming you have a StatusBadge component
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+import StatusBadge from './StatusBadge'; // Make sure this exists
 
-const BlogPostTable = ({ posts, activeTab, handleEdit, handleDelete }) => {
-  console.log('Active Tab:', activeTab); // Log activeTab value
-  console.log('All Posts:', posts); // Log all posts to see what you have
+const BlogPostTable = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Filter posts based on the selected status (activeTab)
-  const filteredPosts = posts.filter((post) => post.status === activeTab);
-  
-  console.log('Filtered Posts:', filteredPosts); // Log filtered posts
+  // Fetch posts from API on mount
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api');
+        setPosts(response.data);
+      } catch (err) {
+        setError('Failed to load posts');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  const handleEdit = (post) => {
+    console.log('Edit post:', post);
+    // Implement modal/form edit here
+  };
+
+  const handleDelete = (post) => {
+    console.log('Delete post:', post);
+    // Implement delete logic here (e.g., axios.delete)
+  };
+
+  if (loading) return <p className="p-4 text-gray-600">Loading...</p>;
+  if (error) return <p className="p-4 text-red-500">{error}</p>;
 
   return (
-    <div className="overflow-x-auto bg-white rounded-md border border-gray-200">
+    <div className="overflow-x-auto bg-white rounded-md border border-gray-200 p-4">
       <table className="w-full table-auto text-left">
         <thead className="bg-[#1D1B25] text-white text-sm">
           <tr>
@@ -21,25 +47,25 @@ const BlogPostTable = ({ posts, activeTab, handleEdit, handleDelete }) => {
             <th className="py-3 px-4">Author</th>
             <th className="py-3 px-4">Category</th>
             <th className="py-3 px-4">Status</th>
-            <th className="py-3 px-4">Created at</th>
+            <th className="py-3 px-4">Created At</th>
             <th className="py-3 px-4">Updated At</th>
             <th className="py-3 px-4">Action</th>
           </tr>
         </thead>
         <tbody className="text-sm text-gray-800">
-          {filteredPosts.length > 0 ? (
-            filteredPosts.map((post) => (
+          {posts.length > 0 ? (
+            posts.map((post) => (
               <tr key={post.id} className="border-t">
                 <td className="py-3 px-4">{post.id}</td>
                 <td className="py-3 px-4">{post.title}</td>
-                <td className="py-3 px-4">{post.author}</td>
+                <td className="py-3 px-4">{post.author_id || 'N/A'}</td>
                 <td className="py-3 px-4">{post.category}</td>
                 <td className="py-3 px-4">
                   <StatusBadge status={post.status} />
                 </td>
-                <td className="py-3 px-4">{post.createdAt}</td>
-                <td className="py-3 px-4">{post.updatedAt}</td>
-                <td className="py-3 px-4 flex gap-3 text-gray-600">
+                <td className="py-3 px-4">{post.created_at?.split('T')[0]}</td>
+                <td className="py-3 px-4">{post.updated_at?.split('T')[0]}</td>
+                <td className="py-3 px-4 flex gap-3">
                   <button
                     title="Edit"
                     onClick={() => handleEdit(post)}
@@ -59,7 +85,7 @@ const BlogPostTable = ({ posts, activeTab, handleEdit, handleDelete }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="8" className="py-3 px-4 text-center text-gray-500">
+              <td colSpan="8" className="py-4 text-center text-gray-500">
                 No posts available.
               </td>
             </tr>
