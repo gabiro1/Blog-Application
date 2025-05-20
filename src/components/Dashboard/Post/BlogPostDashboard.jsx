@@ -32,12 +32,18 @@ const BlogPostDashboard = () => {
   };
 
   // Filtered posts based on search term and active tab
-  const filteredPosts = posts.filter(
-    (post) =>
-      (post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.author.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (post.status === activeTab || activeTab === 'All')
+ const filteredPosts = posts.filter((post) => {
+  const search = searchTerm.toLowerCase();
+  const title = post.title?.toLowerCase() || "";
+  const author = post.author?.toLowerCase() || "";
+  const category = post.category?.toLowerCase() || "";
+  return (
+    (title.includes(search) ||
+      author.includes(search) ||
+      category.includes(search)) &&
+    (post.status === activeTab || activeTab === "All")
   );
+});
 
   // Handle editing a post
   const handleEdit = (post) => {

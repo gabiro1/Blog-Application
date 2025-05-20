@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import logo from '../../assets/images/Logo - icon.png';
 import { useAuth } from "../../context/AuthContext";
-import Footer  from "../UI/Footer";
+import Footer  from "../Footer/Footer";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 

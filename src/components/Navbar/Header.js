@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import logo from "../../assets/images/Logo.png";
-import LoginModal from "../Auth/LoginPage";
+import LoginModal from "../Login/LoginPage";
 import ProfileMenu from "../Profile/ProfileMenu";
 
 function Header({ isAuthenticated, onLogout, userProfilePic }) {

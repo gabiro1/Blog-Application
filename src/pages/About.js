@@ -1,4 +1,4 @@
-import Footer from "../components/UI/Footer";
+import Footer from "../components/Footer/Footer";
 import HeroSection from "../components/about/HeroSection";
 import StatsSection from "../components/about/StatsSection";
 import MissionVisionSection from "../components/about/MissionVisionSection";

@@ -1,54 +1,38 @@
-import React, { useState, useEffect } from "react";
+// src/App.jsx
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/UI/Header";
+
+import Header from "./components/Navbar/Header";
 import PrivateRoute from "./utils/PrivateRoute";
 import Home from "./pages/Home";
 import Blog from "./pages/Blog";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import BlogDetails from "./components/PostDetails/BlogDetail";
-import avatar from "./assets/images/avatar.jpg";
-import Dashboard from "./components/Dashboard/Dashboard";
-// Auth
-import RegisterPage from "./components/Auth/RegisterPage";
-import LoginPage from "./components/Auth/LoginPage";
-import EditProfileForm from "./components/EditProfile/EditProfileForm"; // Profile edit form
-// Dashboard
+import BlogDetails from "./components/blog/BlogDetail";
+import RegisterPage from "./components/Sign up/RegisterPage";
+import LoginPage from "./components/Login/LoginPage";
+import EditProfileForm from "./components/EditProfile/EditProfileForm";
+
 import BlogPostDashboard from "./components/Dashboard/Post/BlogPostDashboard";
 import CommentDashboard from "./components/Dashboard/Comment/CommentDashboard";
 import LikesDashboard from "./components/Dashboard/Likes/LikesDashboard";
-import SubscriberDashboard from "./components/Dashboard/Subscriber/SubscriberDashboard";
-import WriterDashboard from "./components/Dashboard/Writer/WriterDashboard";
+import Dashboard from "./components/Dashboard/Dashboard";
 
-function App() {
-  const [user, setUser] = useState(null);
-  const [userProfilePic, setUserProfilePic] = useState(null);
+// Auth
+import { AuthProvider, useAuth } from "../src/components/AuthContext/AuthContext";
 
-   // Check if the user is logged in by verifying the token
-   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      // Simulate fetching user data using the token
-      setUser({ name: "John Doe" }); // Replace with actual user data
-      setUserProfilePic(avatar); // Replace with actual profile picture
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("authToken"); // Clear the token
-    setUser(null); // Reset user state
-    setUserProfilePic(null); // Reset profile picture
-    console.log("User logged out");
-  };
+const AppContent = () => {
+  const { user, logout, userProfilePic } = useAuth();
 
   return (
-    <Router>
+    <>
       <Header
-        isAuthenticated={!!user} 
-        onLogout={handleLogout}
-        userProfilePic={userProfilePic || avatar} // Default avatar if no profile picture
+        isAuthenticated={!!user}
+        onLogout={logout}
+        userProfilePic={userProfilePic}
       />
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/about" element={<About />} />
@@ -58,27 +42,84 @@ function App() {
 
         {/* Private Routes */}
         <Route
-          path="/"
+          path="/edit-profile"
           element={
-            <PrivateRoute>
-              <Routes>
-                <Route path="edit-profile" element={<EditProfileForm />} />
-                <Route path="blog/:postId" element={<BlogDetails />} />
-                <Route path="post/:postId" element={<BlogDetails />} />
-                <Route path="posts/:id" element={<BlogDetails />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="post" element={<BlogPostDashboard />} />
-                <Route path="comments" element={<CommentDashboard />} />
-                <Route path="likes" element={<LikesDashboard />} />
-                <Route path="subscriber" element={<SubscriberDashboard />} />
-                <Route path="writer" element={<WriterDashboard />} />
-              </Routes>
-            </PrivateRoute>
+            // <PrivateRoute>
+              <EditProfileForm />
+            // </PrivateRoute>
           }
         />
+        <Route
+          path="/blog/:postId"
+          element={
+            
+              <BlogDetails />
+           
+          }
+        />
+        <Route
+          path="/post/:postId"
+          element={
+            // <PrivateRoute>
+              <BlogDetails />
+            // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/posts/:id"
+          element={
+            // <PrivateRoute>
+              <BlogDetails />
+            // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+           
+              <Dashboard />
+          
+          }
+        />
+        <Route
+          path="/post"
+          element={
+            // <PrivateRoute>
+              <BlogPostDashboard />
+            // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/comments"
+          element={
+            // <PrivateRoute>
+              <CommentDashboard />
+            // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/likes"
+          element={
+            // <PrivateRoute>
+              <LikesDashboard />
+            // {/* </PrivateRoute> */}
+          }
+        />
+        
       </Routes>
-    </Router>
+    </>
   );
-}
+};
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
+  );
+};
 
 export default App;
+ 

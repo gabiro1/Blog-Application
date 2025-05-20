@@ -5,7 +5,7 @@ import Categories from "../components/Categories";
 import About from "../components/about/About";
 import WhyWeStarted from "../components/WhyWeStarted";
 import Authors from "../components/Authors";
-import Footer from "../components/UI/Footer";
+import Footer from "../components/Footer/Footer";
 import JoinTeamSection from "../components/about/JoinTeamSection";
 // import BlogPage from "./Blog";
 

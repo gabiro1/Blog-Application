@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 import StatusBadge from './StatusBadge'; // Make sure this exists
+import { useNavigate } from 'react-router-dom';
 
 const BlogPostTable = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,7 +46,7 @@ const BlogPostTable = () => {
           <tr>
             <th className="py-3 px-4">Id</th>
             <th className="py-3 px-4">Title</th>
-            <th className="py-3 px-4">Author</th>
+        
             <th className="py-3 px-4">Category</th>
             <th className="py-3 px-4">Status</th>
             <th className="py-3 px-4">Created At</th>
@@ -57,8 +59,9 @@ const BlogPostTable = () => {
             posts.map((post) => (
               <tr key={post.id} className="border-t">
                 <td className="py-3 px-4">{post.id}</td>
-                <td className="py-3 px-4">{post.title}</td>
-                <td className="py-3 px-4">{post.author_id || 'N/A'}</td>
+                <td className="py-3 px-4"
+                onClick={() => navigate(`/blog/${post.id}`)}>{post.title}</td>
+
                 <td className="py-3 px-4">{post.category}</td>
                 <td className="py-3 px-4">
                   <StatusBadge status={post.status} />

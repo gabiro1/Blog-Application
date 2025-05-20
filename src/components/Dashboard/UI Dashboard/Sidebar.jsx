@@ -7,8 +7,7 @@
       { name: "Post", path: "/post" },
       { name: "Comments", path: "/comments" },
       { name: "Likes", path: "/likes" },
-      { name: "Subscriber", path: "/subscriber" },
-      { name: "Writer", path: "/writer" },
+      
     ];
 
     return (
