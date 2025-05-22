@@ -3,37 +3,18 @@ import React, { useState, useEffect } from 'react';
 const NewPostModal = ({ isOpen, onClose, onSave }) => {
   const [newPost, setNewPost] = useState({
     title: '',
-    subtitle1: '',
-    subtitle2: '',
-    content1: '',
-    content2: '',
+    content: '',
     category: '',
-    author: '',
-    date: '',
-    status: 'Published',
-    image1: '',
-    image2: '',
-    image3: '',
-    mainImage: '',
+    image: null,
   });
 
-  // Reset form when modal closes
   useEffect(() => {
     if (!isOpen) {
       setNewPost({
         title: '',
-        subtitle1: '',
-        subtitle2: '',
-        content1: '',
-        content2: '',
+        content: '',
         category: '',
-        author: '',
-        date: '',
-        status: 'Published',
-        image1: '',
-        image2: '',
-        image3: '',
-        mainImage: '',
+        image: null,
       });
     }
   }, [isOpen]);
@@ -46,9 +27,40 @@ const NewPostModal = ({ isOpen, onClose, onSave }) => {
     }));
   };
 
-  const handleSubmit = () => {
-    onSave(newPost);
-    onClose();
+  const handleFileChange = (e) => {
+    setNewPost((prev) => ({
+      ...prev,
+      image: e.target.files[0],
+    }));
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append('title', newPost.title);
+    formData.append('content', newPost.content);
+    formData.append('category', newPost.category);
+    if (newPost.image) {
+      formData.append('image', newPost.image);
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/post', {
+  method: 'POST',
+  body: formData,
+});
+
+      const result = await response.json();
+      if (response.ok) {
+        alert('Post created successfully!');
+        onSave(result);
+        onClose();
+      } else {
+        alert('Error: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('Something went wrong while creating the post.');
+    }
   };
 
   if (!isOpen) return null;
@@ -69,37 +81,15 @@ const NewPostModal = ({ isOpen, onClose, onSave }) => {
             name="title"
             value={newPost.title}
             onChange={handleChange}
-            placeholder="Post Title"
-            className="w-full border border-gray-300 rounded-md p-2"
-          />
-          <input
-            name="subtitle1"
-            value={newPost.subtitle1}
-            onChange={handleChange}
-            placeholder="Subtitle 1"
-            className="w-full border border-gray-300 rounded-md p-2"
-          />
-          <input
-            name="subtitle2"
-            value={newPost.subtitle2}
-            onChange={handleChange}
-            placeholder="Subtitle 2"
+            placeholder="Title"
             className="w-full border border-gray-300 rounded-md p-2"
           />
           <textarea
-            name="content1"
-            value={newPost.content1}
+            name="content"
+            value={newPost.content}
             onChange={handleChange}
-            placeholder="Content 1"
-            rows="3"
-            className="w-full border border-gray-300 rounded-md p-2"
-          />
-          <textarea
-            name="content2"
-            value={newPost.content2}
-            onChange={handleChange}
-            placeholder="Content 2"
-            rows="3"
+            placeholder="Content"
+            rows="5"
             className="w-full border border-gray-300 rounded-md p-2"
           />
           <input
@@ -110,54 +100,9 @@ const NewPostModal = ({ isOpen, onClose, onSave }) => {
             className="w-full border border-gray-300 rounded-md p-2"
           />
           <input
-            name="author"
-            value={newPost.author}
-            onChange={handleChange}
-            placeholder="Author"
-            className="w-full border border-gray-300 rounded-md p-2"
-          />
-          <input
-            name="date"
-            value={newPost.date}
-            onChange={handleChange}
-            placeholder="Date"
-            className="w-full border border-gray-300 rounded-md p-2"
-          />
-          <select
-            name="status"
-            value={newPost.status}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md p-2"
-          >
-            <option value="Published">Published</option>
-            <option value="Draft">Draft</option>
-          </select>
-          <input
-            name="image1"
-            value={newPost.image1}
-            onChange={handleChange}
-            placeholder="Image 1 URL"
-            className="w-full border border-gray-300 rounded-md p-2"
-          />
-          <input
-            name="image2"
-            value={newPost.image2}
-            onChange={handleChange}
-            placeholder="Image 2 URL"
-            className="w-full border border-gray-300 rounded-md p-2"
-          />
-          <input
-            name="image3"
-            value={newPost.image3}
-            onChange={handleChange}
-            placeholder="Image 3 URL"
-            className="w-full border border-gray-300 rounded-md p-2"
-          />
-          <input
-            name="mainImage"
-            value={newPost.mainImage}
-            onChange={handleChange}
-            placeholder="Main Image URL"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
             className="w-full border border-gray-300 rounded-md p-2"
           />
         </div>

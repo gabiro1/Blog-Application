@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import BlogHeaderSection from '../components/blog/BlogHeaderSection';
 import BlogGrid from '../components/blog/BlogGrid';
-import Footer from '../components/UI/Footer';
+import Footer from '../components/Footer/Footer';
 import { postsData } from '../components/Data/postsData';
 
 const BlogPage = () => {

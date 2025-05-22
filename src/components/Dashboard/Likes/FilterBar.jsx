@@ -1,6 +1,6 @@
 import React from 'react';
 
-const filters = ['All', 'Most liked post', 'Recent likes', 'Top user'];
+const filters = ['All', 'Most liked post', 'Recent likes'];
 
 const FilterBar = ({ activeFilter, onFilter }) => (
   <div className="flex gap-6 mb-6 border-b border-gray-200">

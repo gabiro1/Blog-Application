@@ -1,4 +1,4 @@
-import Footer from "../components/UI/Footer";
+import Footer from "../components/Footer/Footer";
 import ContactSectionHeader from "../components/Contact/ContactSectionHeader";
 import ContactInfo from "../components/Contact/ContactInfo";
 import ContactForm from "../components/Contact/ContactForm";

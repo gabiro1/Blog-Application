@@ -1,68 +1,125 @@
-import React, {useState} from "react";
+// src/App.jsx
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/UI/Header";
+
+import Header from "./components/Navbar/Header";
+import PrivateRoute from "./utils/PrivateRoute";
 import Home from "./pages/Home";
 import Blog from "./pages/Blog";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import BlogDetails from "./components/PostDetails/BlogDetail";
-import avatar from './assets/images/avatar.jpg'; 
-import Dashboard from './components/Dashboard/Dashboard'; 
+import BlogDetails from "./components/blog/BlogDetail";
+import RegisterPage from "./components/Sign up/RegisterPage";
+import LoginPage from "./components/Login/LoginPage";
+import EditProfileForm from "./components/EditProfile/EditProfileForm";
 
-import EditProfileForm from "./components/EditProfile/EditProfileForm"; // Profile edit form
-
-// Dashboard
-import BlogPostDashboard from './components/Dashboard/Post/BlogPostDashboard'; 
+import BlogPostDashboard from "./components/Dashboard/Post/BlogPostDashboard";
 import CommentDashboard from "./components/Dashboard/Comment/CommentDashboard";
-import LikesDashboard from './components/Dashboard/Likes/LikesDashboard';
-import SubscriberDashboard from "./components/Dashboard/Subscriber/SubscriberDashboard";
-import WriterDashboard from "./components/Dashboard/Writer/WriterDashboard";
+import LikesDashboard from "./components/Dashboard/Likes/LikesDashboard";
+import Dashboard from "./components/Dashboard/Dashboard";
 
-function App() {
-  const [userProfilePic, setUserProfilePic] = useState(null);
-  const handleLogout = () => {
-    console.log("User logged out");
-  };
+// Auth
+import { AuthProvider, useAuth } from "../src/components/AuthContext/AuthContext";
+
+const AppContent = () => {
+  const { user, logout, userProfilePic } = useAuth();
 
   return (
-    <Router>
+    <>
       <Header
-        isAuthenticated={false}
-        onLogout={handleLogout}
-        userProfilePic={avatar}
+        isAuthenticated={!!user}
+        onLogout={logout}
+        userProfilePic={userProfilePic}
       />
       <Routes>
-      <Route
-          path="/edit-profile"
-          element={
-            <EditProfileForm
-              userProfilePic={userProfilePic}
-              setUserProfilePic={setUserProfilePic}
-            />
-          }
-        />  {/*Profile edit form*/}
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        {/* BlogDetails route with dynamic postId */}
-        <Route path="/blog/:postId" element={<BlogDetails />} />
-        <Route path="/post/:postId" element={<BlogDetails />} />
-        <Route path="/posts/:id" element={<BlogDetails />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
 
-        {/* edit profile  */}
-        <Route path="/profile" element={<EditProfileForm />} />
-
-         {/* Dashboard  */}
-         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/post" element={<BlogPostDashboard />} />
-        <Route path="/comments" element={<CommentDashboard />} />
-        <Route path="/likes" element={<LikesDashboard />} />
-        <Route path="/subscriber" element={<SubscriberDashboard />} />
-        <Route path="/writer" element={<WriterDashboard/>} />
+        {/* Private Routes */}
+        <Route
+          path="/edit-profile"
+          element={
+            // <PrivateRoute>
+              <EditProfileForm />
+            // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/blog/:postId"
+          element={
+            
+              <BlogDetails />
+           
+          }
+        />
+        <Route
+          path="/post/:postId"
+          element={
+            // <PrivateRoute>
+              <BlogDetails />
+            // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/posts/:id"
+          element={
+            // <PrivateRoute>
+              <BlogDetails />
+            // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+           
+              <Dashboard />
+          
+          }
+        />
+        <Route
+          path="/post"
+          element={
+            // <PrivateRoute>
+              <BlogPostDashboard />
+            // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/comments"
+          element={
+            // <PrivateRoute>
+              <CommentDashboard />
+            // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/likes"
+          element={
+            // <PrivateRoute>
+              <LikesDashboard />
+            // {/* </PrivateRoute> */}
+          }
+        />
+        
       </Routes>
-    </Router>
+    </>
   );
-}
+};
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
+  );
+};
 
 export default App;
+ 

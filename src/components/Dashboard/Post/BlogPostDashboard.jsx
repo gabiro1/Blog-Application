@@ -1,64 +1,91 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Sidebar from '../UI Dashboard/Sidebar';
 import PostTabNav from './PostTabNav';
 import BlogPostTable from './BlogPostTable';
 import DeleteModal from './DeleteModal';
 import EditModal from './EditModal';
-import NewPostModal from './NewPostModal'; // ✅ Use your reusable modal here
-import { postsData } from '../../Data/postsData';
+import NewPostModal from './NewPostModal';
 
 const BlogPostDashboard = () => {
+  const [posts, setPosts] = useState([]);
   const [activeTab, setActiveTab] = useState('Published');
   const [searchTerm, setSearchTerm] = useState('');
   const [postToEdit, setPostToEdit] = useState(null);
   const [postToDelete, setPostToDelete] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [posts, setPosts] = useState(
-    postsData.map((post, index) => ({
-      ...post,
-      id: post.id || index + 1,
-      status: index % 2 === 0 ? 'Published' : 'Draft',
-    }))
+  // Fetch posts from the backend API when the component mounts
+  useEffect(() => {
+    axios.get('/api/posts')  // Adjusted route to match your backend
+      .then(response => {
+        setPosts(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching posts:', error);
+      });
+  }, []);
+
+  // Search functionality
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Filtered posts based on search term and active tab
+ const filteredPosts = posts.filter((post) => {
+  const search = searchTerm.toLowerCase();
+  const title = post.title?.toLowerCase() || "";
+  const author = post.author?.toLowerCase() || "";
+  const category = post.category?.toLowerCase() || "";
+  return (
+    (title.includes(search) ||
+      author.includes(search) ||
+      category.includes(search)) &&
+    (post.status === activeTab || activeTab === "All")
   );
+});
 
-  const handleSearch = (e) => setSearchTerm(e.target.value);
-
-  const handleEdit = (post) => setPostToEdit(post);
+  // Handle editing a post
+  const handleEdit = (post) => {
+    setPostToEdit(post);
+  };
 
   const handleSaveEdit = (updatedPost) => {
-    setPosts((prev) =>
-      prev.map((p) => (p.id === updatedPost.id ? updatedPost : p))
-    );
-    setPostToEdit(null);
+    axios.put(`/api/edit/${updatedPost.id}`, updatedPost)  // Adjusted route to match your backend
+      .then(response => {
+        setPosts(posts.map(post => (post.id === updatedPost.id ? updatedPost : post)));
+        setPostToEdit(null);
+      })
+      .catch(error => {
+        console.error('Error updating post:', error);
+      });
   };
 
-  const handleDelete = (post) => setPostToDelete(post);
+  // Handle deleting a post
+  const handleDelete = (post) => {
+    setPostToDelete(post);
+  };
 
   const confirmDelete = () => {
-    setPosts(posts.filter((p) => p.id !== postToDelete.id));
-    setPostToDelete(null);
+    axios.delete(`/api/delete/${postToDelete.id}`)  // Adjusted route to match your backend
+      .then(() => {
+        setPosts(posts.filter((post) => post.id !== postToDelete.id));
+        setPostToDelete(null);
+      })
+      .catch(error => {
+        console.error('Error deleting post:', error);
+      });
   };
 
-  const exportToCSV = (posts) => {
-    if (!Array.isArray(posts)) {
-      console.error('Invalid posts data. Expected an array, got:', typeof posts, posts);
-      return;
-    }
-
+  // Export to CSV
+  const exportToCSV = () => {
     const headers = ['Id', 'Title', 'Author', 'Category', 'Status'];
-    const rows = posts.map((post) => [
-      post.id,
-      post.title,
-      post.author,
-      post.category,
-      post.status,
-    ]);
+    const rows = posts.map(post => [post.id, post.title, post.author, post.category, post.status]);
 
     let csvContent = 'data:text/csv;charset=utf-8,';
     csvContent += headers.join(',') + '\n';
-    rows.forEach((row) => {
-      csvContent += row.map((field) => `"${String(field).replace(/"/g, '""')}"`).join(',') + '\n';
+    rows.forEach(row => {
+      csvContent += row.join(',') + '\n';
     });
 
     const encodedUri = encodeURI(csvContent);
@@ -70,29 +97,28 @@ const BlogPostDashboard = () => {
     document.body.removeChild(link);
   };
 
+  // Handle adding a new post
   const handleAddNewPost = (newPostData) => {
-    const newPostWithId = { ...newPostData, id: posts.length + 1 };
-    setPosts((prev) => [...prev, newPostWithId]);
-    setIsModalOpen(false);
+    axios.post('/api/post', newPostData)  // Adjusted route to match your backend
+      .then(response => {
+        setPosts([...posts, response.data]);
+        setIsModalOpen(false);
+      })
+      .catch(error => {
+        console.error('Error adding new post:', error);
+      });
   };
-
-  const filteredPosts = posts.filter(
-    (post) =>
-      post.status === activeTab &&
-      (post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.author.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
 
   return (
     <main className="ml-[260px] p-8 relative">
       <Sidebar />
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#1D1B25]">Blog Post</h1>
+        <h1 className="text-2xl font-bold text-[#1D1B25]">Blog Post Dashboard</h1>
         <input
           type="text"
+          placeholder="Search by Title or Author"
           value={searchTerm}
           onChange={handleSearch}
-          placeholder="Search by Name or Email"
           className="flex-grow border outline-none border-gray-300 rounded-md ml-5 mr-5 px-4 py-2 w-auto"
         />
         <button
@@ -102,7 +128,7 @@ const BlogPostDashboard = () => {
           New Post
         </button>
         <button
-          onClick={() => exportToCSV(posts)}
+          onClick={exportToCSV}
           className="bg-green-700 text-white font-medium px-6 py-2 rounded-md hover:bg-green-800"
         >
           Export
@@ -110,6 +136,7 @@ const BlogPostDashboard = () => {
       </div>
 
       <PostTabNav activeTab={activeTab} setActiveTab={setActiveTab} />
+      
       <BlogPostTable
         posts={filteredPosts}
         activeTab={activeTab}
@@ -117,13 +144,14 @@ const BlogPostDashboard = () => {
         handleDelete={handleDelete}
       />
 
-      {/* ✅ Reusable modal for adding new post */}
+      {/* New Post Modal */}
       <NewPostModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleAddNewPost}
       />
 
+      {/* Edit Post Modal */}
       <EditModal
         isOpen={!!postToEdit}
         post={postToEdit}
@@ -131,6 +159,7 @@ const BlogPostDashboard = () => {
         onSave={handleSaveEdit}
       />
 
+      {/* Delete Post Modal */}
       <DeleteModal
         isOpen={!!postToDelete}
         post={postToDelete}

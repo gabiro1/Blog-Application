@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const EditModal = ({ isOpen, post, onClose, onSave }) => {
   const [editedPost, setEditedPost] = useState({
@@ -6,6 +7,9 @@ const EditModal = ({ isOpen, post, onClose, onSave }) => {
     author: '',
     category: '',
     status: '',
+    content: '',
+    reading_time: '',
+    image: null,
     createdAt: '',
     updatedAt: ''
   });
@@ -23,13 +27,48 @@ const EditModal = ({ isOpen, post, onClose, onSave }) => {
     setEditedPost((prev) => ({
       ...prev,
       [name]: value,
-      updatedAt: new Date().toISOString().slice(0, 16).replace('T', ' '), // update time
+      updatedAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleFileChange = (e) => {
+    setEditedPost((prev) => ({
+      ...prev,
+      image: e.target.files[0]
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(editedPost);
+
+    const formData = new FormData();
+    formData.append("title", editedPost.title);
+    formData.append("content", editedPost.content);
+    formData.append("category", editedPost.category);
+    formData.append("reading_time", editedPost.reading_time);
+    if (editedPost.image) {
+      formData.append("image", editedPost.image);
+    }
+
+    try {
+      const response = await axios.put(`/api/posts/${post.id}`, formData, {
+        headers: {
+          // 'Authorization': `Bearer ${your_token}`, // if needed
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+
+      if (response.status === 200) {
+        alert("Post updated successfully!");
+        onSave();   // To trigger refresh or reload in parent
+        onClose();  // Close modal
+      } else {
+        alert(response.data.message || "Failed to update post.");
+      }
+    } catch (error) {
+      console.error("Error updating post:", error);
+      alert("An error occurred while updating the post.");
+    }
   };
 
   return (
@@ -64,6 +103,23 @@ const EditModal = ({ isOpen, post, onClose, onSave }) => {
             placeholder="Category"
             required
           />
+          <textarea
+            name="content"
+            value={editedPost.content}
+            onChange={handleChange}
+            className="w-full border px-4 py-2 rounded"
+            placeholder="Content"
+            required
+          />
+          <input
+            type="number"
+            name="reading_time"
+            value={editedPost.reading_time}
+            onChange={handleChange}
+            className="w-full border px-4 py-2 rounded"
+            placeholder="Reading Time (minutes)"
+            required
+          />
           <select
             name="status"
             value={editedPost.status}
@@ -74,6 +130,12 @@ const EditModal = ({ isOpen, post, onClose, onSave }) => {
             <option value="Published">Published</option>
             <option value="Draft">Draft</option>
           </select>
+          <input
+            type="file"
+            name="image"
+            onChange={handleFileChange}
+            className="w-full border px-4 py-2 rounded"
+          />
 
           <div className="flex justify-end gap-3 pt-4">
             <button

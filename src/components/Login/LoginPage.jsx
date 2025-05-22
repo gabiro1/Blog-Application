@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";  // <-- Import Link
+import { Link } from "react-router-dom";  
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import logo from '../../assets/images/Logo - icon.png';
 import { useAuth } from "../../context/AuthContext";
+import Footer  from "../Footer/Footer";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const { login } = useAuth();
@@ -10,18 +13,34 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    const result = await login(email, password);
-    if (result?.error) {
-      setError(result.error);
-    } else {
-      setError("");
-      // Optionally: redirect somewhere after login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError(""); // Clear previous errors
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/user/login", {
+        email,
+        password,
+      });
+
+      // Assuming the response contains a token
+      const { token } = response.data;
+
+      // Store the token in localStorage
+      localStorage.setItem("authToken", token);
+
+      // Redirect to the dashboard or home page
+      navigate("/blog");
+    } catch (err) {
+      // Handle errors (e.g., invalid credentials)
+      setError(err.response?.data?.message || "Login failed. Please try again.");
     }
   };
 
   return (
+    <div>
     <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4">
       <div className="bg-white rounded-xl p-8 w-full max-w-md shadow-2xl animate-fade-in">
         <h2 className="text-center text-black text-lg font-semibold">Welcome to</h2>
@@ -35,14 +54,14 @@ function LoginPage() {
         <input
           type="email"
           placeholder="Email"
-          className="w-full mb-4 px-4 py-2 border rounded-lg bg-gray-100"
+          className="w-full mb-4 px-4 py-2 border rounded-lg bg-gray-100 text-gray-700"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          className="w-full mb-4 px-4 py-2 border rounded-lg bg-gray-100"
+          className="w-full mb-4 px-4 py-2 border rounded-lg bg-gray-100 text-gray-700"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -52,7 +71,7 @@ function LoginPage() {
             <input type="checkbox" className="accent-green-700" />
             <span className="text-sm text-gray-700">Remember me</span>
           </label>
-          <button className="text-green-800 text-sm font-medium hover:underline">Forgot Password?</button>
+          <button className="txext-green-800 text-sm font-medium hover:underline">Forgot Password?</button>
         </div>
 
         <button
@@ -80,6 +99,9 @@ function LoginPage() {
           </Link>
         </p>
       </div>
+      
+    </div>
+    <Footer />
     </div>
   );
 }
