@@ -4,20 +4,24 @@ import { Menu, X } from "lucide-react";
 import logo from "../../assets/images/Logo.png";
 import LoginModal from "../Login/LoginPage";
 import ProfileMenu from "../Profile/ProfileMenu";
+import { useAuth } from "../AuthContext/AuthContext";
 
 function Header({ isAuthenticated, onLogout, userProfilePic }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-
+  const { user, logout } = useAuth();
   // Create a ref for the LoginModal to detect clicks outside of it
   const loginModalRef = useRef(null);
 
   // Close the modal when clicking outside of it
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (loginModalRef.current && !loginModalRef.current.contains(event.target)) {
-        setShowLogin(false); 
+      if (
+        loginModalRef.current &&
+        !loginModalRef.current.contains(event.target)
+      ) {
+        setShowLogin(false);
       }
     };
 
@@ -28,7 +32,7 @@ function Header({ isAuthenticated, onLogout, userProfilePic }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []); 
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-r from-[#EEF1F8] to-[#0E552D] text-white shadow-md">
@@ -40,19 +44,48 @@ function Header({ isAuthenticated, onLogout, userProfilePic }) {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-10 mr-6">
-          <Link to="/" className="hover:text-gray-200 text-white text-decoration-none">Home</Link>
-          <Link to="/blog" className="hover:text-gray-200 text-white text-decoration-none">Blog</Link>
-          <Link to="/about" className="hover:text-gray-200 text-white text-decoration-none">About</Link>
-          <Link to="/contact" className="hover:text-gray-200 text-white text-decoration-none">Contact</Link>
+          <Link
+            to="/"
+            className="hover:text-gray-200 text-white text-decoration-none"
+          >
+            Home
+          </Link>
+          <Link
+            to="/blog"
+            className="hover:text-gray-200 text-white text-decoration-none"
+          >
+            Blog
+          </Link>
+          <Link
+            to="/about"
+            className="hover:text-gray-200 text-white text-decoration-none"
+          >
+            About
+          </Link>
+          <Link
+            to="/contact"
+            className="hover:text-gray-200 text-white text-decoration-none"
+          >
+            Contact
+          </Link>
 
           {isAuthenticated ? (
             <div className="relative">
-              <img
-                src={userProfilePic}
-                alt="Profile"
-                className="w-10 h-10 rounded-full object-cover border-2 cursor-pointer"
-                onClick={() => setShowProfileMenu(!showProfileMenu)}
-              />
+              {userProfilePic ? (
+                <img
+                  src={userProfilePic}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full object-cover border-2 cursor-pointer"
+                  onClick={() => setShowProfileMenu(!showProfileMenu)}
+                />
+              ) : (
+                <div
+                  onClick={() => setShowProfileMenu(!showProfileMenu)}
+                  className="w-10 h-10 flex items-center justify-center bg-white text-black font-semibold rounded-full border-2 cursor-pointer"
+                >
+                  {user.first_name[0] + user.last_name[0]}
+                </div>
+              )}
               {showProfileMenu && <ProfileMenu onLogout={onLogout} />}
             </div>
           ) : (
@@ -67,8 +100,15 @@ function Header({ isAuthenticated, onLogout, userProfilePic }) {
 
         {/* Mobile Menu Toggle */}
         <div className="md:hidden">
-          <button onClick={() => setMenuOpen(!menuOpen)} className="focus:outline-none">
-            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="focus:outline-none"
+          >
+            {menuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
@@ -77,10 +117,34 @@ function Header({ isAuthenticated, onLogout, userProfilePic }) {
       {menuOpen && (
         <div className="md:hidden px-4 pb-4 bg-gradient-to-r from-[#EEF1F8] to-[#0E552D] text-white text-decoration-none">
           <div className="flex flex-col gap-4">
-            <Link to="/" onClick={() => setMenuOpen(false)} className="hover:text-gray-200 text-white text-decoration-none">Home</Link>
-            <Link to="/blog" onClick={() => setMenuOpen(false)} className="hover:text-gray-200 text-white text-decoration-none">Blog</Link>
-            <Link to="/about" onClick={() => setMenuOpen(false)} className="hover:text-gray-200 text-white text-decoration-none">About</Link>
-            <Link to="/contact" onClick={() => setMenuOpen(false)} className="hover:text-gray-200 text-white text-decoration-none">Contact</Link>
+            <Link
+              to="/"
+              onClick={() => setMenuOpen(false)}
+              className="hover:text-gray-200 text-white text-decoration-none"
+            >
+              Home
+            </Link>
+            <Link
+              to="/blog"
+              onClick={() => setMenuOpen(false)}
+              className="hover:text-gray-200 text-white text-decoration-none"
+            >
+              Blog
+            </Link>
+            <Link
+              to="/about"
+              onClick={() => setMenuOpen(false)}
+              className="hover:text-gray-200 text-white text-decoration-none"
+            >
+              About
+            </Link>
+            <Link
+              to="/contact"
+              onClick={() => setMenuOpen(false)}
+              className="hover:text-gray-200 text-white text-decoration-none"
+            >
+              Contact
+            </Link>
 
             {isAuthenticated ? (
               <div className="flex items-center mt-2">
