@@ -1,36 +1,43 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-
 const AuthContext = createContext();
-
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
+  const [isLogged, setIsLogged] = useState(false);
+  const [authToken, setAuthToken] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    console.log("Token from localStorage:", token); // Debugging line
-    if (token) {
-      // This is where you'd typically fetch real user data
-      setUser({ name: "John Doe" });
-      console.log("we are here!") // Replace with actual user data if needed
+    const savedUser = localStorage.getItem("user");
+    console.log("in auth context")
+    if (token && savedUser) {
+      setAuthToken(token);
+      setUser(JSON.parse(savedUser));
+      setIsLogged(true);
     }
   }, []);
 
-  const login = (userData, token) => {
+  const login = (user, token) => {
+    setAuthToken(token);
+    setUser(user);
+    setIsLogged(true);
     localStorage.setItem("authToken", token);
-    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(user));
+  
+  console.log("logging...")
   };
 
   const logout = () => {
-    localStorage.removeItem("authToken");
+    setAuthToken(null);
     setUser(null);
+    setIsLogged(false);
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
   };
-
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {console.log("AuthContext value:", { user })} {/* Debugging line */}
+    <AuthContext.Provider value={{ isLogged, authToken, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext) ;

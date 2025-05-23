@@ -46,23 +46,25 @@ const AppContent = () => {
           element={
             // <PrivateRoute>
               <EditProfileForm />
-            // </PrivateRoute>
+             //</PrivateRoute>
           }
         />
         <Route
           path="/blog/:postId"
           element={
-            
+            // <PrivateRoute>
               <BlogDetails />
+            // </PrivateRoute> 
+              
            
           }
         />
         <Route
           path="/post/:postId"
           element={
-            // <PrivateRoute>
+            //<PrivateRoute>
               <BlogDetails />
-            // </PrivateRoute>
+             //</PrivateRoute>
           }
         />
         <Route
@@ -70,15 +72,15 @@ const AppContent = () => {
           element={
             // <PrivateRoute>
               <BlogDetails />
-            // </PrivateRoute>
+             //</PrivateRoute>
           }
         />
         <Route
           path="/dashboard"
           element={
-           
+            // <PrivateRoute>
               <Dashboard />
-          
+              // </PrivateRoute>
           }
         />
         <Route
@@ -86,7 +88,7 @@ const AppContent = () => {
           element={
             // <PrivateRoute>
               <BlogPostDashboard />
-            // </PrivateRoute>
+            //  </PrivateRoute>
           }
         />
         <Route

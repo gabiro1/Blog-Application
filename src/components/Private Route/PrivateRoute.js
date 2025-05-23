@@ -1,20 +1,25 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext/';
+import React, { useEffect } from "react";
+import { useAuth } from "../AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-const PrivateRoute = ({ children }) => {
-  // Try to get user from context
-  const { user } = useAuth();
+const ProtectedRoute = ({ children }) => {
+  const { isLogged, user, authToken } = useAuth();
+  const navigate = useNavigate();
 
-  // Fallback: check for token in localStorage
-  const token = localStorage.getItem("authToken");
+  useEffect(() => {
+    if (!isLogged || !user || !authToken) {
+      console.log("not authenticated")
+      navigate("/login");
+      
+    }
+  }, [isLogged, user, authToken, navigate]);
 
-  // Allow access if user exists or token is present
-  if (user || token) {
+  if (isLogged && user && authToken) {
+    console.log("qwerty ")
     return children;
-  } else {
-    return <Navigate to="/login" />;
   }
+
+  return null; 
 };
 
-export default PrivateRoute;
+export default ProtectedRoute;

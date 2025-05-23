@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";  
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import logo from '../../assets/images/Logo - icon.png';
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../AuthContext/AuthContext";
 import Footer  from "../Footer/Footer";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
-  const { login } = useAuth();
+  const { login, isLogged } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,11 +26,11 @@ function LoginPage() {
       });
 
       // Assuming the response contains a token
-      const { token } = response.data;
-
+      const { user, token } = response.data;
+      console.log(user)
       // Store the token in localStorage
-      localStorage.setItem("authToken", token);
-
+      // localStorage.setItem("authToken", token);
+      login(user,token);
       // Redirect to the dashboard or home page
       navigate("/blog");
     } catch (err) {
@@ -40,7 +40,7 @@ function LoginPage() {
   };
 
   return (
-    <div>
+    !isLogged && <div>
     <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4">
       <div className="bg-white rounded-xl p-8 w-full max-w-md shadow-2xl animate-fade-in">
         <h2 className="text-center text-black text-lg font-semibold">Welcome to</h2>
