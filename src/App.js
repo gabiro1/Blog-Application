@@ -86,9 +86,9 @@ const AppContent = () => {
         <Route
           path="/post"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <BlogPostDashboard />
-             </PrivateRoute>
+            //  </PrivateRoute>
           }
         />
         <Route
